@@ -1,4 +1,5 @@
-﻿using FootballScoreApp.Services.IServices;
+﻿using FootballScoreApp.Entities;
+using FootballScoreApp.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
@@ -13,8 +14,11 @@ namespace FootballScoreApp.Controllers
             _leagueService = leagueService;
         }
 
-        [HttpGet("GetLeagueById")]
-        public Task<>
+        [HttpGet("GetLeagueByShortName")]
+        public Task<League> GetLeagueByShortName(string shortName)
+        {
+            return _leagueService.GetLeagueByShortName(shortName);
+        }
         
     }
 }
