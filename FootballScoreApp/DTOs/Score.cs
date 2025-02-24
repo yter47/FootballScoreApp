@@ -1,4 +1,4 @@
-﻿namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.DTOs
 {
     public class Score
     {

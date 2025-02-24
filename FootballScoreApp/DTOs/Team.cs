@@ -1,6 +1,6 @@
-﻿namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.DTOs
 {
-    public class Team : BaseEntity
+    public class Team
     {
         public string Name { get; set; }
         public string ShortName { get; set; }

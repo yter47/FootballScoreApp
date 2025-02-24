@@ -1,6 +1,6 @@
-﻿namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.DTOs
 {
-    public class Season : BaseEntity
+    public class Season
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

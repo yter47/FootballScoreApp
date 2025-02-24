@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.DTOs
 {
-    public class Match : BaseEntity
+    public class Match
     {
         public Area Area { get; set; }
         public League Competition { get; set; }
