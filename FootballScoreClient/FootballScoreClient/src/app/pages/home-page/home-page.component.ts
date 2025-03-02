@@ -2,11 +2,10 @@ import { Component, inject } from '@angular/core';
 import { Match } from '../../core/match';
 import { MatchService } from '../../services/match.service';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
