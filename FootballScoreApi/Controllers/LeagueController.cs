@@ -15,21 +15,27 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpGet("GetLeagueByShortName")]
-        public Task<League> GetLeagueByShortName(string shortName)
+        public async Task<League> GetLeagueByShortName(string shortName)
         {
-            return _leagueService.GetLeagueByShortName(shortName);
+            return await _leagueService.GetLeagueByShortName(shortName);
         }
-        
+
         [HttpGet("GetAvailableCompetitions")]
-        public Task<CompetitonsResponse> GetAvailableLeagues()
+        public async Task<CompetitonsResponse> GetAvailableLeagues()
         {
-            return _leagueService.GetAvailableLeagues();
+            return await _leagueService.GetAvailableLeagues();
         }
 
         [HttpGet("GetMatchesByCompetitionId")]
-        public Task<IEnumerable<Match>> GetMatchesByCompetitionId(int id)
+        public async Task<IEnumerable<Match>> GetMatchesByCompetitionId(int id)
         {
-            return _leagueService.GetMatchesByCompetitionId(id);
+            return await _leagueService.GetMatchesByCompetitionId(id);
+        }
+
+        [HttpGet("GetRecentMatches")]
+        public async Task<MatchesReponse> GetRecentMatches()
+        {
+            return await _leagueService.GetRecentMatches();
         }
     }
 }
