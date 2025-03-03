@@ -43,14 +43,14 @@ namespace FootballScoreApp.Services
             throw new HttpRequestException($"Anropet misslyckades, statuskod: {response.StatusCode}");
         }
 
-        public async Task<IEnumerable<Match>> GetMatchesByCompetitionId(int id)
+        public async Task<MatchesReponse> GetMatchesByCompetitionId(int id)
         {
             var response = await _httpClient.GetAsync($"https://api.football-data.org/v4/competitions/{id}/matches");
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<IEnumerable<Match>>(content);
+                var data = JsonConvert.DeserializeObject<MatchesReponse>(content);
 
                 return data;
             }

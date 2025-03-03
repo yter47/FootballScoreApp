@@ -15,8 +15,8 @@ export class MatchService {
     
   }
   
-  getRecentMatches(): Promise<Match[]> {
-    console.log("matches")
-    return firstValueFrom(this.apiService.getRecentMatches());
-  }
+  // getRecentMatches(): Promise<Match[]> {
+  //   console.log("matches")
+  //   return firstValueFrom(this.apiService.getRecentMatches());
+  // }
 }

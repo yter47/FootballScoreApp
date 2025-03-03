@@ -1,0 +1,16 @@
+<div *ngIf="leagues$ | async as leagueResponse; else loading">
+    <div *ngFor="let league of leagueResponse.competitions">
+        <div class="league-crests">
+            <nav>
+                <a [routerLink]="['/league', league.id]">
+                    <img [src]="league.emblem" alt="{{ league.name }}" width="30"> {{league.name}}
+                </a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #loading>
+    <p>Loading leagues...</p>
+</ng-template>

@@ -2,16 +2,22 @@
 {
     public class MatchesReponse
     {
-        public ResultSet ResultSet { get; set; }
+        public Filters? Filters { get; set; }
+        public ResultSet? ResultSet { get; set; }
+        public League? Competition { get; set; }
         public IEnumerable<Match> Matches { get; set; }
     }
 
     public class ResultSet
     {
         public int Count { get; set; }
-        public string Competitions { get; set; }
         public DateOnly First { get; set; }
         public DateOnly Last { get; set; }
         public int Played { get; set; }
+    }
+
+    public class Filters
+    {
+        public string Season { get; set; }
     }
 }

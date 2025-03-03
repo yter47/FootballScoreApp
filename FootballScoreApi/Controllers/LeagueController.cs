@@ -27,7 +27,7 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpGet("GetMatchesByCompetitionId")]
-        public async Task<IEnumerable<Match>> GetMatchesByCompetitionId(int id)
+        public async Task<MatchesReponse> GetMatchesByCompetitionId(int id)
         {
             return await _leagueService.GetMatchesByCompetitionId(id);
         }

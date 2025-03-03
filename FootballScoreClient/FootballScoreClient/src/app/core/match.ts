@@ -1,3 +1,8 @@
+export class MatchResponse {
+    resultSet!: ResultSet;
+    matches!: Match[];
+}
+
 export class Area {
     id!: number;
     name!: string;
