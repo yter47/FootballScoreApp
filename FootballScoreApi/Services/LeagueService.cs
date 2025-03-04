@@ -70,5 +70,19 @@ namespace FootballScoreApp.Services
             }
             throw new HttpRequestException($"Anropet misslyckades, statuskod: {response.StatusCode}");
         }
+
+        public async Task<StandingResponse> GetStandingsByCompetitionId(int id)
+        {
+            var response = await _httpClient.GetAsync($"https://api.football-data.org/v4/competitions/{id}/standings");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<StandingResponse>(content);
+
+                return data;
+            }
+            throw new HttpRequestException($"Anropet misslyckades, statuskod: {response.StatusCode}");
+        }
     }
 }

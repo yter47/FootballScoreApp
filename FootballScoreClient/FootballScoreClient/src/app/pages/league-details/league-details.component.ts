@@ -1,13 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { filter, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Match, MatchResponse } from '../../core/match';
 import { CommonModule } from '@angular/common';
+import { MatchListComponent } from '../../shared/match-list/match-list.component';
+import { StandingsResponse } from '../../core/standings';
+import { TableComponent } from '../../shared/table/table.component';
 
 @Component({
   selector: 'app-league-details',
-  imports: [CommonModule],
+  imports: [CommonModule, MatchListComponent, TableComponent],
   templateUrl: './league-details.component.html',
   styleUrl: './league-details.component.scss'
 })
@@ -19,6 +22,8 @@ export class LeagueDetailsComponent {
   todaysMatches$: Observable<Match[]>
   upcomingMatches$: Observable<Match[]>
   playedMatches$: Observable<Match[]>
+
+  standings$: Observable<StandingsResponse>
   
   currentDate = new Date();
   selectedCategory: string = 'today';
@@ -26,6 +31,7 @@ export class LeagueDetailsComponent {
     {label: 'Todays Matches', value: 'today'},
     {label: 'Upcoming Matches', value: 'upcoming'},
     {label: 'Played Games', value: 'played'},
+    {label: 'Standings', value: 'standings'},
   ]
 
   constructor(private route: ActivatedRoute) {
@@ -45,7 +51,7 @@ export class LeagueDetailsComponent {
     );
     this.upcomingMatches$ = this.matches$.pipe(map((matches) => matches.matches.filter((match => match.status !== 'FINISHED'))));
     this.playedMatches$ = this.matches$.pipe(map((matches) => matches.matches.filter((match => match.status === 'FINISHED')))).pipe(map(matches => matches.reverse()));
-
+    this.standings$ = this.leagueService.getStandingsByLeagueId(leagueId);
   }
 
   getMatchesByMatchDay(matchday: number): Observable<Match[]> {

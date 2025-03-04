@@ -1,0 +1,22 @@
+<div *ngFor="let match of matches">
+    <div class="match">
+        <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
+        <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
+            date:'yyyy' }}</p>
+        <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+        <p>Status: {{ match.status }}</p>
+        <p>Match Time: {{ match.utcDate | date:'short' }}</p>
+
+        <div class="score">
+            <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{
+                match.score.fullTime.away }}</span>
+            <span *ngIf="match.score.fullTime.home === null"></span>
+        </div>
+
+        <div class="team-crests">
+            <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
+            <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
+        </div>
+    </div>
+    <hr>
+</div>

@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { MatchResponse } from '../../core/match';
 import { CommonModule } from '@angular/common';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
+import { MatchListComponent } from '../../shared/match-list/match-list.component';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule],
+  imports: [CommonModule, MatchListComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
