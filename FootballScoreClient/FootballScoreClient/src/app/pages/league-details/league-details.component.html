@@ -1,52 +1,53 @@
 <div class="main">
-    <div class="categories">
-        <nav *ngFor="let category of categories" [class.selected]="selectedCategory === category.value"
-            (click)="showCategory(category.value)">
-            {{ category.label }}
-        </nav>
-    </div>
+  <div class="categories">
+    <nav
+      *ngFor="let category of categories"
+      [class.selected]="selectedCategory === category.value"
+      (click)="showCategory(category.value)"
+    >
+      {{ category.label }}
+    </nav>
+  </div>
 </div>
 
 <!-- Section for Today's Matches -->
 <div *ngIf="selectedCategory === 'today'">
-    <div *ngIf="todaysMatches$ | async as matchResponse; else loading">
-        <app-match-list [matches]="matchResponse">
-
-        </app-match-list>
-    </div>
+  <div *ngIf="todaysMatches$ | async as matchResponse; else loading">
+    <ng-container *ngIf="matchResponse.length > 0; else noGames">
+      <app-match-list [matches]="matchResponse"> </app-match-list>
+    </ng-container>
+  </div>
 </div>
 
 <!-- Section for Upcoming Matches -->
 <div *ngIf="selectedCategory === 'upcoming'">
-    <div *ngIf="upcomingMatches$ | async as matchResponse; else loading">
-        <app-match-list [matches]="matchResponse">
-
-        </app-match-list>
-    </div>
+  <div *ngIf="upcomingMatches$ | async as matchResponse; else loading">
+    <ng-container *ngIf="matchResponse.length > 0; else noGames">
+      <app-match-list [matches]="matchResponse"> </app-match-list>
+    </ng-container>
+  </div>
 </div>
 
 <!-- Section for Played Matches -->
 <div *ngIf="selectedCategory === 'played'">
-    <div *ngIf="playedMatches$ | async as matchResponse; else loading">
-        <app-match-list [matches]="matchResponse">
-
-        </app-match-list>
-    </div>
+  <div *ngIf="playedMatches$ | async as matchResponse; else loading">
+    <ng-container *ngIf="matchResponse.length > 0; else noGames">
+      <app-match-list [matches]="matchResponse"> </app-match-list>
+    </ng-container>
+  </div>
 </div>
 
-<!-- Section for Played Matches -->
+<!-- Section for Standings -->
 <div *ngIf="selectedCategory === 'standings'">
-    <div *ngIf="standings$ | async as standings; else loading">
-        <app-table [table]="standings.standings">
-
-        </app-table>
-    </div>
+  <div *ngIf="standings$ | async as standings; else loading">
+    <app-table [standings]="standings.standings"> </app-table>
+  </div>
 </div>
 
 <ng-template #loading>
-    <p>Loading matches...</p>
+  <p>Loading matches...</p>
 </ng-template>
 
 <ng-template #noGames>
-    <p>Loading matches...</p>
+  <p>No games this date...</p>
 </ng-template>

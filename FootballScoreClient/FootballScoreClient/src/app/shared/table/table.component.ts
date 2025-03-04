@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  @Input() table: Standings[] = [];
+  @Input() standings: Standings[] = [];
 }
