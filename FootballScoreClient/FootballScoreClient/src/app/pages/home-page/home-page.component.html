@@ -1,3 +1,5 @@
+<h1>Today's Games</h1>
+
 <div *ngIf="response$ | async as matchResponse; else loading">
     <div *ngFor="let match of matchResponse.matches">
       <div class="match">

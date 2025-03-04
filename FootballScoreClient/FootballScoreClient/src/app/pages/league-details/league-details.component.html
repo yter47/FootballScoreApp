@@ -1,1 +1,98 @@
-<p>league-details works!</p>
+<div class="main">
+    <div class="categories">
+        <nav *ngFor="let category of categories" [class.selected]="selectedCategory === category.value"
+            (click)="showCategory(category.value)">
+            {{ category.label }}
+        </nav>
+    </div>
+</div>
+
+<!-- Section for Today's Matches -->
+<div *ngIf="selectedCategory === 'today'">
+    <div *ngIf="todaysMatches$ | async as matchResponse; else loading">
+        <div *ngFor="let match of matchResponse">
+            <div class="match">
+                <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
+                <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
+                    date:'yyyy' }}</p>
+                <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+                <p>Status: {{ match.status }}</p>
+                <p>Match Time: {{ match.utcDate | date:'short' }}</p>
+
+                <div class="score">
+                    <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{
+                        match.score.fullTime.away }}</span>
+                    <span *ngIf="match.score.fullTime.home === null"></span>
+                </div>
+
+                <div class="team-crests">
+                    <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
+                    <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<!-- Section for Upcoming Matches -->
+<div *ngIf="selectedCategory === 'upcoming'">
+    <div *ngIf="upcomingMatches$ | async as matchResponse; else loading">
+        <div *ngFor="let match of matchResponse">
+            <div class="match">
+                <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
+                <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
+                    date:'yyyy' }}</p>
+                <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+                <p>Status: {{ match.status }}</p>
+                <p>Match Time: {{ match.utcDate | date:'short' }}</p>
+
+                <div class="score">
+                    <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{
+                        match.score.fullTime.away }}</span>
+                    <span *ngIf="match.score.fullTime.home === null"></span>
+                </div>
+
+                <div class="team-crests">
+                    <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
+                    <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section for Played Matches -->
+<div *ngIf="selectedCategory === 'played'">
+    <div *ngIf="playedMatches$ | async as matchResponse; else loading">
+        <div *ngFor="let match of matchResponse">
+            <div class="match">
+                <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
+                <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
+                    date:'yyyy' }}</p>
+                <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+                <p>Status: {{ match.status }}</p>
+                <p>Match Time: {{ match.utcDate | date:'short' }}</p>
+
+                <div class="score">
+                    <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{
+                        match.score.fullTime.away }}</span>
+                    <span *ngIf="match.score.fullTime.home === null"></span>
+                </div>
+
+                <div class="team-crests">
+                    <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
+                    <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <p>Loading matches...</p>
+</ng-template>
+
+<ng-template #noGames>
+    <p>Loading matches...</p>
+</ng-template>
