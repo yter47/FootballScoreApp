@@ -3,9 +3,9 @@
 
   <div *ngFor="let standing of standings">
     <div class="standings-group">
-      <h2>
-        {{ standing.stage }} - {{ standing.type }} - Group: {{ standing.group }}
-      </h2>
+      <h4 *ngIf="standing.group">
+        Omgång: {{ standing.stage }} Grupp: {{ standing.group }}
+      </h4>
 
       <table class="standings-table">
         <thead>
@@ -25,11 +25,8 @@
         <tbody>
           <tr *ngFor="let team of standing.table">
             <td>{{ team.position }}</td>
-            <td><img
-                [src]="team.team.crest"
-                alt="{{ team.team.name }}"
-                width="30"/>
-              {{ team.team.name }}
+            <td class="crestAndNameColumn"><img [src]="team.team.crest" alt="{{ team.team.name }}" width="20" />
+              <span style="margin-left: 10px;"> {{ team.team.name }} </span>
             </td>
             <td>{{ team.playedGames }}</td>
             <td>{{ team.won }}</td>

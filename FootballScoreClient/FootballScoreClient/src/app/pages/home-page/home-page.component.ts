@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MatchResponse } from '../../core/match';
+import { Competition, MatchResponse } from '../../core/match';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';

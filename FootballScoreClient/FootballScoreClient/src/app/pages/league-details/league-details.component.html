@@ -1,10 +1,7 @@
 <div class="main">
   <div class="categories">
-    <nav
-      *ngFor="let category of categories"
-      [class.selected]="selectedCategory === category.value"
-      (click)="showCategory(category.value)"
-    >
+    <nav *ngFor="let category of categories" [class.selected]="selectedCategory === category.value"
+      (click)="showCategory(category.value)">
       {{ category.label }}
     </nav>
   </div>

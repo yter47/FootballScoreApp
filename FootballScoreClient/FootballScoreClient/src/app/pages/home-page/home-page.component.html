@@ -1,9 +1,12 @@
-<h1>Today's Games</h1>
+<h2>Today's Games</h2>
+<hr>
 
-<div *ngIf="response$ | async as matchResponse; else loading">
-  <app-match-list [matches]="matchResponse.matches">
+<div class="home-page">
+  <div *ngIf="response$ | async as matchResponse; else loading">
+    <app-match-list [matches]="matchResponse.matches">
 
-  </app-match-list>
+    </app-match-list>
+  </div>
 </div>
 
 <ng-template #loading>
