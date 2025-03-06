@@ -7,7 +7,6 @@ namespace FootballScoreApp.Services.IServices
         Task<CompetitonsResponse> GetAvailableLeagues();
         Task<League> GetLeagueByShortName(string shortName);
         Task<MatchesReponse> GetMatchesByCompetitionId(int id);
-        Task<MatchesReponse> GetRecentMatches();
         Task<StandingResponse> GetStandingsByCompetitionId(int id);
     }
 }

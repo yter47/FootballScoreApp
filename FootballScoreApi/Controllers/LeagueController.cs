@@ -31,12 +31,6 @@ namespace FootballScoreApp.Controllers
         {
             return await _leagueService.GetMatchesByCompetitionId(id);
         }
-
-        [HttpGet("GetRecentMatches")]
-        public async Task<MatchesReponse> GetRecentMatches()
-        {
-            return await _leagueService.GetRecentMatches();
-        }
         
         [HttpGet("GetStandingsByCompetitionId")]
         public async Task<StandingResponse> GetStandingsByCompetitionId(int id)
