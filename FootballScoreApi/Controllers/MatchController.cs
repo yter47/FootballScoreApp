@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class MatchController : Controller
     {
         private readonly IMatchService _matchService;
         public MatchController(IMatchService matchService)
         {
-            _matchService = matchService
+            _matchService = matchService;
         }
 
         [HttpGet("GetRecentMatches")]
@@ -19,9 +21,9 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpGet("GetMatchById")]
-        public async Task<MatchesReponse> GetMatchById()
+        public async Task<Match> GetMatchById(int id)
         {
-            return await _matchService.GetMatchById();
+            return await _matchService.GetMatchById(id);
         }
     }
 }

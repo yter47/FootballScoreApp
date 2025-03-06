@@ -1,22 +1,20 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from './api.service';
-import { Match } from '../core/match';
-import { firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Match, MatchResponse } from '../core/match';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
-  
-  apiService: ApiService;
 
-  constructor() {
-    this.apiService = inject(ApiService)
-    
+  httpClient = inject(HttpClient)
+
+  getRecentMatches(): Observable<MatchResponse> {
+    return this.httpClient.get<MatchResponse>("https://localhost:7048/Match/GetRecentMatches");
   }
-  
-  // getRecentMatches(): Promise<Match[]> {
-  //   console.log("matches")
-  //   return firstValueFrom(this.apiService.getRecentMatches());
-  // }
+
+  getMatchById(id: number): Observable<Match> {
+    return this.httpClient.get<Match>(`https://localhost:7048/Match/getMatchById?id=${id}`)
+  }
 }

@@ -1,1 +1,3 @@
-<p>match-page works!</p>
+<div *ngIf="match$ | async as match">
+    {{match.id}}
+</div>

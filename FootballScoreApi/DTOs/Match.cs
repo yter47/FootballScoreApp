@@ -5,6 +5,7 @@
         public Area? Area { get; set; }
         public League? Competition { get; set; }
         public Season? Season { get; set; }
+        public int Id { get; set; }
         public DateTime? UtcDate { get; set; }
         public string? Status { get; set; }
         public int? Matchday { get; set; }

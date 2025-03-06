@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ILeagueService, LeagueService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddCors(options =>

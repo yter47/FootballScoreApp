@@ -3,7 +3,11 @@
         <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
         <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
             date:'yyyy' }}</p>
-        <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+        
+        <a [routerLink]="['/match', match.id]">
+            <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+        </a>        
+        
         <p>Status: {{ match.status }}</p>
         <p>Match Time: {{ match.utcDate | date:'short' }}</p>
 

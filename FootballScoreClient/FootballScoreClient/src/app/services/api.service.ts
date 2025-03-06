@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MatchResponse } from '../core/match';
+import { Match, MatchResponse } from '../core/match';
 import { LeagueResponse } from '../core/league';
 import { StandingsResponse } from '../core/standings';
 
@@ -12,10 +12,6 @@ import { StandingsResponse } from '../core/standings';
 export class ApiService {
 
   httpClient = inject(HttpClient)
-
-  getRecentMatches(): Observable<MatchResponse> {
-    return this.httpClient.get<MatchResponse>("https://localhost:7048/League/GetRecentMatches");
-  }
 
   getAvailableLeagues(): Observable<LeagueResponse> {
     return this.httpClient.get<LeagueResponse>("https://localhost:7048/League/GetAvailableCompetitions");

@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { Competition, MatchResponse } from '../../core/match';
+import { MatchResponse } from '../../core/match';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../services/api.service';
 import { MatchListComponent } from '../../shared/match-list/match-list.component';
+import { MatchService } from '../../services/match.service';
 
 @Component({
   selector: 'app-home-page',
@@ -13,9 +13,9 @@ import { MatchListComponent } from '../../shared/match-list/match-list.component
 })
 export class HomePageComponent {
 
-  private matchService = inject(ApiService);
+  private matchService = inject(MatchService);
   response$: Observable<MatchResponse>
-  
+
   constructor() {
     this.response$ = this.matchService.getRecentMatches();
   }
