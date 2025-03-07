@@ -1,1 +1,46 @@
-<p>team-page works!</p>
+<div *ngIf="team$ | async as team">
+    <div class="team-info">
+        <h1>{{ team.name }}</h1>
+        <img [src]="team.crest" alt="{{ team.name }} Logo" class="team-logo">
+
+        <div class="team-details">
+            <p><strong>Short Name:</strong> {{ team.shortName }}</p>
+            <p><strong>Founded:</strong> {{ team.founded }}</p>
+            <p><strong>Address:</strong> {{ team.address }}</p>
+            <p><strong>Website:</strong> <a [href]="team.website" target="_blank">{{ team.website }}</a></p>
+            <p><strong>Club Colors:</strong> {{ team.clubColors }}</p>
+            <p><strong>Venue:</strong> {{ team.venue }}</p>
+        </div>
+
+        <div class="league-info">
+            <h3>Competing in:</h3>
+            <p>{{ team.runningCompetitions[0].name }}</p>
+            <img [src]="team.runningCompetitions[0].emblem" alt="League Emblem">
+        </div>
+
+        <div class="coach-info">
+            <h3>Coach:</h3>
+            <p><strong>Name:</strong> {{ team.coach?.name }}</p>
+            <p><strong>Date of Birth:</strong> {{ team.coach?.dateOfBirth }}</p>
+            <p><strong>Nationality:</strong> {{ team.coach?.nationality }}</p>
+            <p><strong>Contract:</strong> {{ team.coach?.contract?.start }} to {{ team.coach?.contract?.until }}</p>
+        </div>
+
+        <div class="area-info">
+            <h3>Location:</h3>
+            <img [src]="team.area?.flag" alt="{{ team.area?.name }} Flag" class="flag">
+            <p><strong>Country:</strong> {{ team.area?.name }}</p>
+        </div>
+        <div *ngIf="team.squad">
+            <div *ngFor="let player of team.squad | orderBy: 'position'">
+                <div>
+                    <strong>{{ player.name }}</strong> ({{ player.position }}) <br>
+                    Född: {{ player.dateOfBirth }} <br>
+                    Nationalitet: {{ player.nationality }}
+                </div>
+                <hr>
+            </div>
+        </div>
+
+    </div>
+</div>

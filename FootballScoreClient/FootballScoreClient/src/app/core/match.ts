@@ -1,3 +1,5 @@
+import { League } from "./league";
+
 export class MatchResponse {
     resultSet!: ResultSet;
     matches!: Match[];
@@ -27,11 +29,44 @@ export class Season {
 }
 
 export class Team {
+    area?: Area;
     id!: number;
     name: string = "";
     shortName: string = "";
     tla: string = "";
     crest?: string = "";
+    address?: string;
+    website?: string;
+    founded?: number;
+    clubColors?: string;
+    venue?: string;
+    lastUpdated?: Date
+    runningCompetitions!: League[];
+    coach?: Coach;
+    squad?: Player[];
+}
+
+export class Coach {
+    id!: number;
+    firstName!: string;
+    lastName!: string;
+    name!: string;
+    dateOfBirth?: Date;
+    nationality?: string;
+    contract?: Contract;
+}
+
+export class Contract {
+    start?: Date;
+    until?: Date;
+}
+
+export class Player {
+    id!: number;
+    name!: string;
+    position!: string;
+    dateOfBirth?: Date;
+    nationality?: string;
 }
 
 export class Score {
