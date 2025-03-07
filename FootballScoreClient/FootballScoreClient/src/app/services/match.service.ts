@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Match, MatchResponse } from '../core/match';
+import { Match, MatchResponse, Team } from '../core/match';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,5 +16,9 @@ export class MatchService {
 
   getMatchById(id: number): Observable<Match> {
     return this.httpClient.get<Match>(`https://localhost:7048/Match/getMatchById?id=${id}`)
+  }
+
+  getTeamById(id:number): Observable<Team> {
+    return this.httpClient.get<Team>(`https://localhost:7048/Match/getTeamById?id=${id}`)
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute } from '@angular/router';
@@ -14,16 +14,17 @@ import { TableComponent } from '../../shared/table/table.component';
   templateUrl: './league-details.component.html',
   styleUrl: './league-details.component.scss'
 })
-export class LeagueDetailsComponent {
+export class LeagueDetailsComponent implements OnInit{
   
   private leagueService = inject(ApiService)
+  private route = inject(ActivatedRoute)
 
-  matches$: Observable<MatchResponse>
-  todaysMatches$: Observable<Match[]>
-  upcomingMatches$: Observable<Match[]>
-  playedMatches$: Observable<Match[]>
+  matches$!: Observable<MatchResponse>
+  todaysMatches$!: Observable<Match[]>
+  upcomingMatches$!: Observable<Match[]>
+  playedMatches$!: Observable<Match[]>
 
-  standings$: Observable<StandingsResponse>
+  standings$!: Observable<StandingsResponse>
   
   currentDate = new Date();
   selectedCategory: string = 'today';
@@ -34,7 +35,7 @@ export class LeagueDetailsComponent {
     {label: 'Standings', value: 'standings'},
   ]
 
-  constructor(private route: ActivatedRoute) {
+  ngOnInit(): void {
     let leagueId = Number(this.route.snapshot.paramMap.get('id'));
     this.matches$ = this.leagueService.getMatchesByLeagueId(leagueId);
     this.todaysMatches$ = this.matches$.pipe(

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Match } from '../../core/match';
@@ -11,12 +11,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './match-page.component.html',
   styleUrl: './match-page.component.scss'
 })
-export class MatchPageComponent {
+export class MatchPageComponent implements OnInit{
 
-  matchService = inject(MatchService);
-  match$: Observable<Match>
+  private matchService = inject(MatchService);
+  private route = inject(ActivatedRoute);
+  match$!: Observable<Match>
   
-  constructor(private route: ActivatedRoute) {
+  ngOnInit() {
     let matchId = Number(this.route.snapshot.paramMap.get('id'));
     this.match$ = this.matchService.getMatchById(matchId);
   }

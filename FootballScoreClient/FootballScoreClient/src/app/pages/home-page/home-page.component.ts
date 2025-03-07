@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatchResponse } from '../../core/match';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -11,12 +11,12 @@ import { MatchService } from '../../services/match.service';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
 
   private matchService = inject(MatchService);
-  response$: Observable<MatchResponse>
+  response$!: Observable<MatchResponse>
 
-  constructor() {
+  ngOnInit(): void {
     this.response$ = this.matchService.getRecentMatches();
   }
 }

@@ -1,3 +1,20 @@
 <div *ngIf="match$ | async as match">
+
+    <div>
+        <p>
+            {{match.area.name}}
+            <img [src]="match.area.flag" alt="{{ match.homeTeam.name }}" width="30">
+            {{match.competition.name}}
+        </p>
+        <div class="team-crests">
+            <a [routerLink]="['/team', match.homeTeam.id]">
+                <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
+            </a>
+            <a [routerLink]="['/team', match.homeTeam.id]">
+                <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
+            </a>
+        </div>
+    </div>
+
     {{match.id}}
 </div>

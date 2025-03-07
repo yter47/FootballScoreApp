@@ -25,5 +25,11 @@ namespace FootballScoreApp.Controllers
         {
             return await _matchService.GetMatchById(id);
         }
+        
+        [HttpGet("GetTeamById")]
+        public async Task<Team> GetTeamById(int id)
+        {
+            return await _matchService.GetTeamById(id);
+        }
     }
 }
