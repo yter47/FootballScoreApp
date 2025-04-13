@@ -1,6 +1,4 @@
-﻿using FootballScoreApp.Entities;
-
-namespace FootballScoreApp.DTOs
+﻿namespace FootballScoreApp.DTOs
 {
     public class Person
     {
