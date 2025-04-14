@@ -1,8 +1,12 @@
+using FootballScoreApp.DbConnection;
 using FootballScoreApp.Services;
 using FootballScoreApp.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("FootballApp")));
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -22,6 +26,8 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+
 
 var app = builder.Build();
 

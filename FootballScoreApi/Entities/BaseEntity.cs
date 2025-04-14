@@ -1,7 +1,9 @@
-﻿namespace FootballScoreApp.Entities
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace FootballScoreApp.Entities
 {
     public class BaseEntity
     {
-        int Id { get; set; }
+        public int Id { get; set; }
     }
 }
