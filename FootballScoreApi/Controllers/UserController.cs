@@ -1,5 +1,9 @@
 ﻿using FootballScoreApp.DbConnection;
 using FootballScoreApp.Entities;
+using FootballScoreApp.Features.Users.CreateUser;
+using FootballScoreApp.Features.Users.GetUserById;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
@@ -8,26 +12,29 @@ namespace FootballScoreApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly AppDbContext context;
+        private readonly ISender _sender;
 
-        public UserController(AppDbContext context)
+        public UserController(ISender sender)
         {
-            this.context = context;
+            _sender = sender;
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateUser(int age, string firstName, string lastName)
+        public async Task<ActionResult<int>> CreateUser(CreateUserCommand command)
         {
-            var user = new User
-            {
-                Age = age,
-                FirstName = firstName,
-                LastName = lastName
-            };
-            await context.Users.AddAsync(user);
-            await context.SaveChangesAsync();
-            return Ok(user.Id);
+            return Ok(await _sender.Send(command));
+        }
 
+        [HttpGet]
+        public async Task<ActionResult<User>> GetUserById(int id)
+        {
+            var user = await _sender.Send(new GetUserByIdQuery(id));
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
     }
 }
