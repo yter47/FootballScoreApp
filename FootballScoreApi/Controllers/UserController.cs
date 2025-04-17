@@ -1,7 +1,9 @@
 ﻿using FootballScoreApp.DbConnection;
+using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
 using FootballScoreApp.Features.Users.CreateUser;
 using FootballScoreApp.Features.Users.GetUserById;
+using FootballScoreApp.Features.Users.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +21,13 @@ namespace FootballScoreApp.Controllers
             _sender = sender;
         }
 
-        [HttpPost]
+        [HttpPost("CreateUser")]
         public async Task<ActionResult<int>> CreateUser(CreateUserCommand command)
         {
             return Ok(await _sender.Send(command));
         }
 
-        [HttpGet]
+        [HttpGet("GetUserById")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _sender.Send(new GetUserByIdQuery(id));
@@ -35,6 +37,12 @@ namespace FootballScoreApp.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpPost("RegisterUser")]
+        public async Task<ActionResult<User>> RegisterUser(RegisterUserCommand command)
+        {
+            return Ok(await _sender.Send(command));
         }
     }
 }
