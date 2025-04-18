@@ -7,5 +7,10 @@ namespace FootballScoreApp.Services.IServices
     {
         string CreateToken(User user);
         Task<TokenResponseDto> CreateTokenResponse(User? user);
+        string GenerateRefreshToken();
+        string GenerateAndSaveRefreshToken(User user);
+
+
+
     }
 }

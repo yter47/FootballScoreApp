@@ -1,9 +1,9 @@
-﻿using FootballScoreApp.DTOs;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
 using FootballScoreApp.Services.IServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace FootballScoreApp.Services
@@ -42,8 +42,22 @@ namespace FootballScoreApp.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
-        public Task<TokenResponseDto> CreateTokenResponse(User? user)
+        //public string GenerateAndSaveRefreshToken(User user)
+        //{
+        //    var refreshToken = GenerateRefreshToken();
+        //    return refreshToken;
+        //}
+
+        public string GenerateRefreshToken()
         {
+            var randomNumber = new Byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
+
+        //public Task<TokenResponseDto> CreateTokenResponse(User? user)
+        //{
+        //}
     }
 }

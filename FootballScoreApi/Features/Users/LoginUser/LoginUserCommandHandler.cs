@@ -49,27 +49,10 @@ namespace FootballScoreApp.Features.Users.LoginUser
             var response = new TokenResponseDto
             {
                 AccessToken = _tokenService.CreateToken(user),
-                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user)
+                RefreshToken = _tokenService.GenerateRefreshToken()
             };
 
             return response;
-        }
-
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new Byte[32];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
-        }
-
-        private async Task<string> GenerateAndSaveRefreshTokenAsync(User user)
-        {
-            var refreshToken = GenerateRefreshToken();
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            await _context.SaveChangesAsync();
-            return refreshToken;
         }
     }
 }

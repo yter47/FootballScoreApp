@@ -3,6 +3,7 @@ using FootballScoreApp.Entities;
 using FootballScoreApp.Features.Users.CreateUser;
 using FootballScoreApp.Features.Users.GetUserById;
 using FootballScoreApp.Features.Users.LoginUser;
+using FootballScoreApp.Features.Users.RefreshToken;
 using FootballScoreApp.Features.Users.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -59,6 +60,12 @@ namespace FootballScoreApp.Controllers
                 return BadRequest("Username or password was incorrect");
             }
             return Ok(response);
+        }
+
+        [HttpPost]
+        public ActionResult<TokenResponseDto> RefreshToken(RefreshTokenCommand command)
+        {
+
         }
 
         [Authorize]
