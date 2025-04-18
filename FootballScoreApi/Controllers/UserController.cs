@@ -1,11 +1,8 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.DTOs;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
 using FootballScoreApp.Features.Users.CreateUser;
 using FootballScoreApp.Features.Users.GetUserById;
 using FootballScoreApp.Features.Users.RegisterUser;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
