@@ -1,10 +1,12 @@
 ﻿using FootballScoreApp.DbConnection;
 using FootballScoreApp.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootballScoreApp.Features.Users.RegisterUser
 {
-    public class RegisterUserCommandHandler
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, User?>
     {
         private readonly AppDbContext _context;
 
@@ -13,8 +15,14 @@ namespace FootballScoreApp.Features.Users.RegisterUser
             _context = context;
         }
 
-        public async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<User?> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
+
+            if(await _context.Users.AnyAsync(u => u.Username.ToLower() == request.username.ToLower()))
+            {
+                return null;
+            }
+
             var user = new User
             {
                 Age = request.age,
