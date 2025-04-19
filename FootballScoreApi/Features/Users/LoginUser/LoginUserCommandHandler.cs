@@ -48,13 +48,11 @@ namespace FootballScoreApp.Features.Users.LoginUser
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
 
-            var response = new TokenResponseDto
+            return new TokenResponseDto
             {
                 AccessToken = _tokenService.CreateToken(user),
                 RefreshToken = refreshToken.Token
             };
-
-            return response;
         }
     }
 }

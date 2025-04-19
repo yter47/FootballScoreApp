@@ -20,7 +20,7 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpPost("RegisterUser")]
-        public async Task<ActionResult<User>> RegisterUser(RegisterUserCommand command)
+        public async Task<ActionResult<TokenResponseDto?>> RegisterUser(RegisterUserCommand command)
         {
             if (command.password.Length < 8)
             {
