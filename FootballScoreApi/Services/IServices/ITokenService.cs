@@ -6,11 +6,6 @@ namespace FootballScoreApp.Services.IServices
     public interface ITokenService
     {
         string CreateToken(User user);
-        Task<TokenResponseDto> CreateTokenResponse(User? user);
-        string GenerateRefreshToken();
-        string GenerateAndSaveRefreshToken(User user);
-
-
-
+        RefreshToken GenerateRefreshToken(User user);
     }
 }

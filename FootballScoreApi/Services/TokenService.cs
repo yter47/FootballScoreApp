@@ -8,7 +8,7 @@ using System.Text;
 
 namespace FootballScoreApp.Services
 {
-    public class TokenService : ITokenService
+    public sealed class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
         public TokenService(IConfiguration configuration)
@@ -23,7 +23,7 @@ namespace FootballScoreApp.Services
                  new Claim(ClaimTypes.Name, user.Username),
                  new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
-            claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claims.AddRange(user.UserRoles.Select(ur => new Claim(ClaimTypes.Role, ur.Role.Name)));
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtSettings:Token")!)
@@ -42,22 +42,19 @@ namespace FootballScoreApp.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
-        //public string GenerateAndSaveRefreshToken(User user)
-        //{
-        //    var refreshToken = GenerateRefreshToken();
-        //    return refreshToken;
-        //}
-
-        public string GenerateRefreshToken()
+        public RefreshToken GenerateRefreshToken(User user)
         {
             var randomNumber = new Byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
-        }
+            var base64Token = Convert.ToBase64String(randomNumber);
 
-        //public Task<TokenResponseDto> CreateTokenResponse(User? user)
-        //{
-        //}
+            return new RefreshToken
+            {
+                UserId = user.Id,
+                Token = base64Token,
+                RefreshTokenExpiryTimeUtc = DateTime.UtcNow.AddDays(7)
+            };
+        }
     }
 }

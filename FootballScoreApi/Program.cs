@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ILeagueService, LeagueService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -25,14 +25,13 @@ namespace FootballScoreApp.Features.Users.RegisterUser
 
             var user = new User
             {
-                Age = request.age,
                 FirstName = request.firstName,
                 LastName = request.lastName,
                 Username = request.username
             };
 
             var passwordHash = new PasswordHasher<User>()
-                .HashPassword(user, request.passwordHash);
+                .HashPassword(user, request.password);
 
             user.PasswordHash = passwordHash;
 

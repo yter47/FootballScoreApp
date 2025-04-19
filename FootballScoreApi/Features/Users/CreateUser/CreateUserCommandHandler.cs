@@ -18,7 +18,6 @@ namespace FootballScoreApp.Features.Users.CreateUser
         {
             var user = new User
             {
-                Age = request.age,
                 FirstName = request.firstName,
                 LastName = request.lastName
             };

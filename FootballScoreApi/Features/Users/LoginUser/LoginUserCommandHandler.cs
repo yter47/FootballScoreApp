@@ -5,29 +5,27 @@ using FootballScoreApp.Services.IServices;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace FootballScoreApp.Features.Users.LoginUser
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenResponseDto?>
     {
         private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
 
         public LoginUserCommandHandler(
             AppDbContext context,
-            IConfiguration configuration,
             ITokenService tokenService)
         {
             _context = context;
-            _configuration = configuration;
             _tokenService = tokenService;
         }
 
         public async Task<TokenResponseDto?> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
                 .FirstOrDefaultAsync(u => u.Username == request.username);
 
             if (user is null)
@@ -46,10 +44,14 @@ namespace FootballScoreApp.Features.Users.LoginUser
                 return null;
             }
 
+            var refreshToken = _tokenService.GenerateRefreshToken(user);
+            await _context.RefreshTokens.AddAsync(refreshToken);
+            await _context.SaveChangesAsync();
+
             var response = new TokenResponseDto
             {
                 AccessToken = _tokenService.CreateToken(user),
-                RefreshToken = _tokenService.GenerateRefreshToken()
+                RefreshToken = refreshToken.Token
             };
 
             return response;

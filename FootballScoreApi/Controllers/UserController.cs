@@ -40,34 +40,6 @@ namespace FootballScoreApp.Controllers
             return Ok(user);
         }
 
-        [HttpPost("RegisterUser")]
-        public async Task<ActionResult<User>> RegisterUser(RegisterUserCommand command)
-        {
-            var user = await _sender.Send(command);
-            if(user is null)
-            {
-                return BadRequest("Username already exists");
-            }
-            return Ok(user);
-        }
-
-        [HttpPost("LoginUser")]
-        public async Task<ActionResult<TokenResponseDto>> LoginUser(LoginUserCommand command)
-        {
-            var response = await _sender.Send(command);
-            if (response is null)
-            {
-                return BadRequest("Username or password was incorrect");
-            }
-            return Ok(response);
-        }
-
-        [HttpPost]
-        public ActionResult<TokenResponseDto> RefreshToken(RefreshTokenCommand command)
-        {
-
-        }
-
         [Authorize]
         [HttpGet("Authorize")]
         public IActionResult AuthenticatedOnlyEndPoint()
