@@ -12,7 +12,7 @@
     {
         public Filters Filters { get; set; }
         public Area Area { get; set; }
-        public League Competition { get; set; }
+        public Competiton Competition { get; set; }
         public Season Season { get; set; }
         public IEnumerable<Standing> Standings { get; set; }
     }

@@ -14,7 +14,7 @@
         public string ClubColors { get; set; }
         public string Venue { get; set; }
         public DateTime LastUpdated { get; set; }
-        public IEnumerable<League>? RunningCompetitions { get; set; }
+        public IEnumerable<Competiton>? RunningCompetitions { get; set; }
         public Coach? Coach { get; set; }
         public IEnumerable<Player> Squad { get; set; }
     }

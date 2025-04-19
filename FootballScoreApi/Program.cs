@@ -20,8 +20,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ILeagueService, LeagueService>();
+builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpClient();
 
@@ -40,9 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
-
-var test = builder.Configuration["JwtSettings:Token"];
-var x = 0;
 
 builder.Services.AddCors(options =>
 {

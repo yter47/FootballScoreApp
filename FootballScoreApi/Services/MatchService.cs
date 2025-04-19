@@ -42,19 +42,5 @@ namespace FootballScoreApp.Services
             }
             throw new HttpRequestException($"Anropet misslyckades, statuskod: {response.StatusCode}");
         }
-
-        public async Task<Team> GetTeamById(int id)
-        {
-            var response = await _httpClient.GetAsync($"https://api.football-data.org/v4/teams/{id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<Team>(content);
-
-                return data;
-            }
-            throw new HttpRequestException($"Anropet misslyckades, statuskod: {response.StatusCode}");
-        }
     }
 }

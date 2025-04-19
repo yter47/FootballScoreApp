@@ -1,5 +1,7 @@
 ﻿using FootballScoreApp.DTOs;
-using FootballScoreApp.Services.IServices;
+using FootballScoreApp.Features.Match.GetMatchById;
+using FootballScoreApp.Features.Match.GetRecentMatches;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
@@ -8,28 +10,23 @@ namespace FootballScoreApp.Controllers
     [Route("[controller]")]
     public class MatchController : Controller
     {
-        private readonly IMatchService _matchService;
-        public MatchController(IMatchService matchService)
+        private readonly ISender _sender;
+
+        public MatchController(ISender sender)
         {
-            _matchService = matchService;
+            _sender = sender;
         }
 
         [HttpGet("GetRecentMatches")]
-        public async Task<MatchesReponse> GetRecentMatches()
+        public async Task<ActionResult<MatchesReponse>> GetRecentMatches()
         {
-            return await _matchService.GetRecentMatches();
+            return Ok(await _sender.Send(new GetRecentMatchesQuery()));
         }
 
         [HttpGet("GetMatchById")]
-        public async Task<Match> GetMatchById(int id)
+        public async Task<ActionResult<Match>> GetMatchById(int id)
         {
-            return await _matchService.GetMatchById(id);
-        }
-        
-        [HttpGet("GetTeamById")]
-        public async Task<Team> GetTeamById(int id)
-        {
-            return await _matchService.GetTeamById(id);
+            return Ok(await _sender.Send(new GetMatchByIdQuery(id)));
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
-using FootballScoreApp.Features.Users.LoginUser;
-using FootballScoreApp.Features.Users.RefreshToken;
-using FootballScoreApp.Features.Users.RegisterUser;
+using FootballScoreApp.Features.Authentication.LoginUser;
+using FootballScoreApp.Features.Authentication.RefreshToken;
+using FootballScoreApp.Features.Authentication.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ namespace FootballScoreApp.Controllers
         [HttpPost("RegisterUser")]
         public async Task<ActionResult<TokenResponseDto?>> RegisterUser(RegisterUserCommand command)
         {
-            if (command.password.Length < 8)
+            if (command.Password.Length < 8)
             {
                 return BadRequest("Password must be atleast 8 characters long");
             }

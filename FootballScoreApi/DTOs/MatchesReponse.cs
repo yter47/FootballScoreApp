@@ -4,7 +4,7 @@
     {
         public Filters? Filters { get; set; }
         public ResultSet? ResultSet { get; set; }
-        public League? Competition { get; set; }
+        public Competiton? Competition { get; set; }
         public IEnumerable<Match> Matches { get; set; }
     }
 
