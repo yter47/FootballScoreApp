@@ -1,3 +1,4 @@
+using FluentValidation;
 using FootballScoreApp.DbConnection;
 using FootballScoreApp.Services;
 using FootballScoreApp.Services.IServices;
@@ -15,6 +16,8 @@ builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

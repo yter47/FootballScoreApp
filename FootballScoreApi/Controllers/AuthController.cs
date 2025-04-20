@@ -22,6 +22,13 @@ namespace FootballScoreApp.Controllers
         [HttpPost("RegisterUser")]
         public async Task<ActionResult<TokenResponseDto?>> RegisterUser(RegisterUserCommand command)
         {
+
+            
+            if (command.Password.Length < 8)
+            {
+                return BadRequest("Password must be atleast 8 characters long");
+            }
+            
             if (command.Password.Length < 8)
             {
                 return BadRequest("Password must be atleast 8 characters long");

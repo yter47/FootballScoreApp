@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.Entities
 {
     public class BaseEntity
     {
