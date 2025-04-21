@@ -1,5 +1,4 @@
 ﻿using FootballScoreApp.DTOs;
-using FootballScoreApp.Entities;
 using FootballScoreApp.Features.Authentication.LoginUser;
 using FootballScoreApp.Features.Authentication.RefreshToken;
 using FootballScoreApp.Features.Authentication.RegisterUser;

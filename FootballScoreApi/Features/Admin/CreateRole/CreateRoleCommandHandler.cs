@@ -1,15 +1,15 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
+using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
 
 namespace FootballScoreApp.Features.Roles.CreateRole
 {
     public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Role?>
     {
-        private readonly AppDbContext _context;
-        public CreateRoleCommandHandler(AppDbContext context)
+        private readonly IRepository<Role> _roleRepository;
+        public CreateRoleCommandHandler(IRepository<Role> roleRepository)
         {
-            _context = context;
+            _roleRepository = roleRepository;
         }
 
         public async Task<Role?> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
@@ -23,8 +23,8 @@ namespace FootballScoreApp.Features.Roles.CreateRole
                 return null;
             }
 
-            _context.Add(role);
-            await _context.SaveChangesAsync(cancellationToken);
+            _roleRepository.Add(role);
+            await _roleRepository.SaveChangesAsync(cancellationToken);
 
             return role;
         }

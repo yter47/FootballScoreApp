@@ -1,23 +1,22 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
-using FootballScoreApp.Services.IServices;
+using FootballScoreApp.Providers;
+using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballScoreApp.Features.Authentication.RefreshToken
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponseDto?>
     {
-        private readonly AppDbContext _context;
-        private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly ITokenProvider _tokenProvider;
 
         public RefreshTokenCommandHandler(
-            AppDbContext context,
-            ITokenService tokenService)
+            IRefreshTokenRepository refreshTokenRepository,
+            ITokenProvider tokenProvider)
         {
-            _context = context;
-            _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
+            _tokenProvider = tokenProvider;
         }
 
         public async Task<TokenResponseDto?> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
@@ -28,24 +27,20 @@ namespace FootballScoreApp.Features.Authentication.RefreshToken
                 return null;
             }
 
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
-            _context.Add(refreshToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            var refreshToken = _tokenProvider.GenerateRefreshToken(user);
+            _refreshTokenRepository.Add(refreshToken);
+            await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             return new TokenResponseDto
             {
-                AccessToken = _tokenService.CreateToken(user),
+                AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
             };
         }
 
         private async Task<User?> ValidateRefreshTokenAsync(string token, CancellationToken cancellationToken)
         {
-            var refreshToken = await _context.RefreshTokens
-                .Include(r => r.User)
-                    .ThenInclude(u => u.UserRoles)
-                        .ThenInclude(ur => ur.Role)
-                .FirstOrDefaultAsync(r => r.Token == token, cancellationToken);
+            var refreshToken = await _refreshTokenRepository.GetRefreshTokenUserAndRolesByRefreshTokenAsync(token, cancellationToken);
 
 
             if (refreshToken is null || refreshToken.Token!= token

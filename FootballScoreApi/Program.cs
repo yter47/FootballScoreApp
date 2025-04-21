@@ -1,5 +1,7 @@
-using FluentValidation;
 using FootballScoreApp.DbConnection;
+using FootballScoreApp.Providers;
+using FootballScoreApp.Repositories;
+using FootballScoreApp.Repositories.IRepositories;
 using FootballScoreApp.Services;
 using FootballScoreApp.Services.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,16 +19,24 @@ builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Services
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+
+//Repositories
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+//Providers
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -1,29 +1,34 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
+using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballScoreApp.Features.Admin.AssignRoleToUser
 {
     public class AssignRoleCommandHandler : IRequestHandler<AssignRoleCommand, UserRole?>
     {
-        private readonly AppDbContext _context;
+        private readonly IRepository<Role> _roleRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AssignRoleCommandHandler(AppDbContext context)
+        public AssignRoleCommandHandler(
+            IRepository<Role> roleRepository,
+            IUserRoleRepository userRoleRepository,
+            IUserRepository userRepository)
         {
-            _context = context;
+            _roleRepository = roleRepository;
+            _userRoleRepository = userRoleRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<UserRole?> Handle(AssignRoleCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.UserId);
-            var role = await _context.Roles.FindAsync(request.RoleId);
+            var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+            var role = await _roleRepository.GetByIdAsync(request.RoleId, cancellationToken);
 
             if (user is null || role is null)
                 return null;
 
-            var userRole = await _context.UserRoles
-                .FirstOrDefaultAsync(ur => ur.UserId == user.Id && ur.RoleId == role.Id);
+            var userRole = await _userRoleRepository.GetUserRoleByUserAndRoleId(user.Id, role.Id);
 
             if (userRole is not null)
                 return userRole;
@@ -34,11 +39,10 @@ namespace FootballScoreApp.Features.Admin.AssignRoleToUser
                 RoleId = role.Id
             };
 
-            _context.UserRoles.Add(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            _userRoleRepository.Add(entity);
+            await _userRoleRepository.SaveChangesAsync(cancellationToken);
 
             return entity;
         }
-
     }
 }

@@ -1,34 +1,33 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
-using FootballScoreApp.Services.IServices;
+using FootballScoreApp.Providers;
+using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballScoreApp.Features.Authentication.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, TokenResponseDto?>
     {
-        private readonly AppDbContext _context;
-        private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly ITokenProvider _tokenProvider;
 
         public RegisterUserCommandHandler(
-            AppDbContext context,
-            ITokenService tokenService)
+            IRefreshTokenRepository refreshTokenRepository,
+            IUserRepository userRepository,
+            IRoleRepository roleRepository,
+            ITokenProvider tokenProvider)
         {
-            _context = context;
-            _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+            _tokenProvider = tokenProvider;
         }
 
         public async Task<TokenResponseDto?> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-
-            if (await _context.Users.AnyAsync(u => u.Username.ToLower() == request.Username.ToLower(), cancellationToken))
-            {
-                return null;
-            }
-
             var user = new User
             {
                 FirstName = request.FirstName,
@@ -41,14 +40,14 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
 
             user.PasswordHash = passwordHash;
 
-            var defaultRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "User", cancellationToken);
+            var defaultRole = await _roleRepository
+                .GetRoleByRoleNameAsync("User", cancellationToken);
 
             if (defaultRole == null)
             {
                 defaultRole = new Role { Name = "User" };
-                _context.Roles.Add(defaultRole);
-                await _context.SaveChangesAsync(cancellationToken);
+                _roleRepository.Add(defaultRole);
+                await _roleRepository.SaveChangesAsync(cancellationToken);
             }
 
             user.UserRoles = new List<UserRole>
@@ -56,16 +55,16 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
                 new UserRole { Role = defaultRole }
             };
 
-            _context.Add(user);
-            await _context.SaveChangesAsync();
+            _userRepository.Add(user);
+            await _userRepository.SaveChangesAsync(cancellationToken);
 
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
-            _context.RefreshTokens.Add(refreshToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            var refreshToken = _tokenProvider.GenerateRefreshToken(user);
+            _refreshTokenRepository.Add(refreshToken);
+            await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             return new TokenResponseDto
             {
-                AccessToken = _tokenService.CreateToken(user),
+                AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
             };
         }

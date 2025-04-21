@@ -1,17 +1,16 @@
 ﻿using FootballScoreApp.Entities;
-using FootballScoreApp.Services.IServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FootballScoreApp.Services
+namespace FootballScoreApp.Providers
 {
-    public sealed class TokenService : ITokenService
+    public sealed class TokenProvider : ITokenProvider
     {
         private readonly IConfiguration _configuration;
-        public TokenService(IConfiguration configuration)
+        public TokenProvider(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -44,7 +43,7 @@ namespace FootballScoreApp.Services
 
         public RefreshToken GenerateRefreshToken(User user)
         {
-            var randomNumber = new Byte[32];
+            var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             var base64Token = Convert.ToBase64String(randomNumber);

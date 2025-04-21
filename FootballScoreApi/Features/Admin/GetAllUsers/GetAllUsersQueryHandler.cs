@@ -1,23 +1,22 @@
-﻿using FootballScoreApp.DbConnection;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
+using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballScoreApp.Features.Admin.GetAllUsers
 {
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<User>>
     {
-        private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public GetAllUsersQueryHandler(AppDbContext context)
+        public GetAllUsersQueryHandler(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Users
-                .ToListAsync(cancellationToken);
+            return await _userRepository
+                .GetAllAsync(cancellationToken);
         }
     }
 }
