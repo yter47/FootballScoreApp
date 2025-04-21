@@ -19,51 +19,39 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpPost("RegisterUser")]
-        public async Task<ActionResult<TokenResponseDto?>> RegisterUser(RegisterUserCommand command)
+        public async Task<ActionResult<TokenResponseDto>> RegisterUser([FromBody] RegisterUserCommand command)
         {
+            var result = await _sender.Send(command);
 
-            
-            if (command.Password.Length < 8)
+            if (result.IsFailure)
             {
-                return BadRequest("Password must be atleast 8 characters long");
+                return BadRequest(new { Error = result.Error });
             }
-            
-            if (command.Password.Length < 8)
-            {
-                return BadRequest("Password must be atleast 8 characters long");
-            }
-
-            var user = await _sender.Send(command);
-            if (user is null)
-            {
-                return BadRequest("Username already exists");
-            }
-
-            return Ok(user);
+            return Ok(result.Value);
         }
 
         [HttpPost("LoginUser")]
         public async Task<ActionResult<TokenResponseDto>> LoginUser(LoginUserCommand command)
         {
-            var response = await _sender.Send(command);
-            if (response is null)
-            {
-                return BadRequest("Username or password was incorrect");
-            }
+            var result = await _sender.Send(command);
 
-            return Ok(response);
+            if (result.IsFailure)
+            {
+                return BadRequest(new { Error = result.Error });
+            }
+            return Ok(result.Value);
         }
 
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenCommand command)
         {
-            var response = await _sender.Send(command);
-            if (response is null)
-            {
-                return BadRequest("Refresh token is invalid");
-            }
+            var result = await _sender.Send(command);
 
-            return Ok(response);
+            if (result.IsFailure)
+            {
+                return BadRequest(new { Error = result.Error });
+            }
+            return Ok(result.Value);
         }
     }
 }

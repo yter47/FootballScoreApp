@@ -1,4 +1,5 @@
-﻿using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
 using FootballScoreApp.Providers;
 using FootballScoreApp.Repositories.IRepositories;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FootballScoreApp.Features.Authentication.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, TokenResponseDto?>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<TokenResponseDto?>>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUserRepository _userRepository;
@@ -26,7 +27,9 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<TokenResponseDto?> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokenResponseDto?>> Handle(
+            RegisterUserCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = new User
             {
@@ -40,15 +43,13 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
 
             user.PasswordHash = passwordHash;
 
-            var defaultRole = await _roleRepository
-                .GetRoleByRoleNameAsync("User", cancellationToken);
+            var defaultRole = await _roleRepository.GetOrCreateRoleByNameAsync("User", cancellationToken);
 
-            if (defaultRole == null)
+            if (defaultRole is null)
             {
-                defaultRole = new Role { Name = "User" };
-                _roleRepository.Add(defaultRole);
-                await _roleRepository.SaveChangesAsync(cancellationToken);
+                return Result<TokenResponseDto?>.Failure("Failed to get or create default 'User' role.");
             }
+
 
             user.UserRoles = new List<UserRole>
             {
@@ -62,11 +63,11 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
             _refreshTokenRepository.Add(refreshToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
-            return new TokenResponseDto
+            return Result<TokenResponseDto?>.Success(new TokenResponseDto  
             {
                 AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
-            };
+            });
         }
     }
 }

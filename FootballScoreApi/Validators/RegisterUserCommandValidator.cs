@@ -15,8 +15,8 @@ namespace FootballScoreApp.Validators
 
             RuleFor(x => x.Username)
                 .NotEmpty().WithMessage("Username is required")
-                .MinimumLength(3).WithMessage("Username must be at least 5 characters")
-                .MaximumLength(25).WithMessage("Username must be less than 20 characters");
+                .MinimumLength(3).WithMessage("Username must be at least 3 characters")
+                .MaximumLength(25).WithMessage("Username must be less than 25 characters");
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password is required")

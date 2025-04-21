@@ -1,4 +1,5 @@
-﻿using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
 using FootballScoreApp.Providers;
 using FootballScoreApp.Repositories.IRepositories;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace FootballScoreApp.Features.Authentication.RefreshToken
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponseDto?>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<TokenResponseDto?>>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenProvider _tokenProvider;
@@ -19,36 +20,57 @@ namespace FootballScoreApp.Features.Authentication.RefreshToken
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<TokenResponseDto?> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Result<TokenResponseDto?>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
         {
-            var user = await ValidateRefreshTokenAsync(command.RefreshToken, cancellationToken);
+            if (string.IsNullOrEmpty(command.RefreshToken))
+            {
+                return Result<TokenResponseDto?>.Failure("Refresh token is required.");
+            }
+
+            var result = await ValidateRefreshTokenAsync(command.RefreshToken, cancellationToken);
+            if (result.IsFailure)
+            {
+                var errorMessage = result.Error ?? "Unknown error occurred while validating refresh token.";
+                return Result<TokenResponseDto?>.Failure(errorMessage);
+            }
+
+            var user = result.Value;
             if (user is null)
             {
-                return null;
+                return Result<TokenResponseDto?>.Failure("User not found associated with refresh token.");
             }
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
             _refreshTokenRepository.Add(refreshToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
-            return new TokenResponseDto
+            return Result<TokenResponseDto?>.Success(new TokenResponseDto
             {
                 AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
-            };
+            });
         }
 
-        private async Task<User?> ValidateRefreshTokenAsync(string token, CancellationToken cancellationToken)
+        private async Task<Result<User>> ValidateRefreshTokenAsync(string token, CancellationToken cancellationToken)
         {
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenUserAndRolesByRefreshTokenAsync(token, cancellationToken);
 
-
-            if (refreshToken is null || refreshToken.Token!= token
-                || refreshToken.RefreshTokenExpiryTimeUtc < DateTime.UtcNow)
+            if (refreshToken is null)
             {
-                return null;
+                return Result<User>.Failure("Refresh token not found.");
             }
-            return refreshToken.User;
+
+            if (refreshToken.Token != token)
+            {
+                return Result<User>.Failure("Token mismatch.");
+            }
+
+            if (refreshToken.RefreshTokenExpiryTimeUtc < DateTime.UtcNow)
+            {
+                return Result<User>.Failure("Refresh token has expired.");
+            }
+
+            return Result<User>.Success(refreshToken.User);
         }
     }
 }

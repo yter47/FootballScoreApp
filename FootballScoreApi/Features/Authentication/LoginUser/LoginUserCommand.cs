@@ -1,7 +1,8 @@
-﻿using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.DTOs;
 using MediatR;
 
 namespace FootballScoreApp.Features.Authentication.LoginUser
 {
-    public record LoginUserCommand(string Username, string Password) : IRequest<TokenResponseDto>;
+    public record LoginUserCommand(string Username, string Password) : IRequest<Result<TokenResponseDto>>;
 }

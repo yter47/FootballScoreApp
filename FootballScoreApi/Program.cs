@@ -1,10 +1,15 @@
+using FluentValidation;
 using FootballScoreApp.DbConnection;
 using FootballScoreApp.Providers;
 using FootballScoreApp.Repositories;
 using FootballScoreApp.Repositories.IRepositories;
 using FootballScoreApp.Services;
 using FootballScoreApp.Services.IServices;
+using FootballScoreApp.Validators;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -18,6 +23,9 @@ builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -73,6 +81,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        if (exception is ValidationException validationException)
+        {
+            var errors = validationException.Errors
+                .GroupBy(x => x.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(e => e.ErrorMessage).ToArray());
+
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(new ValidationProblemDetails(errors));
+        }
+    });
+});
 
 app.UseCors("AllowSpecificOrigin");
 

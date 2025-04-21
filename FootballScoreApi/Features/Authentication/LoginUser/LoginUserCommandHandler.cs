@@ -1,4 +1,5 @@
-﻿using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.DTOs;
 using FootballScoreApp.Entities;
 using FootballScoreApp.Providers;
 using FootballScoreApp.Repositories.IRepositories;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FootballScoreApp.Features.Authentication.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenResponseDto?>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<TokenResponseDto>>
     {
         private readonly ITokenProvider _tokenProvider;
         private readonly IUserRepository _userRepository;
@@ -23,35 +24,29 @@ namespace FootballScoreApp.Features.Authentication.LoginUser
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<TokenResponseDto?> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokenResponseDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetUserWithRolesByUsernameAsync(request.Username, cancellationToken);
 
             if (user is null)
-            {
-                return null;
-            }
+                return Result<TokenResponseDto>.Failure("Invalid username or password");
 
-            if (user.Username != request.Username)
-            {
-                return null;
-            }
+            var passwordCheck = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password);
 
-            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password)
-                == PasswordVerificationResult.Failed)
-            {
-                return null;
-            }
+            if (passwordCheck == PasswordVerificationResult.Failed)
+                return Result<TokenResponseDto>.Failure("Invalid username or password");
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
             _refreshTokenRepository.Add(refreshToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
-            return new TokenResponseDto
+            var tokenResponse = new TokenResponseDto
             {
                 AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
             };
+
+            return Result<TokenResponseDto>.Success(tokenResponse);
         }
     }
 }

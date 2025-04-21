@@ -1,7 +1,8 @@
-﻿using FootballScoreApp.DTOs;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.DTOs;
 using MediatR;
 
 namespace FootballScoreApp.Features.Authentication.RefreshToken
 {
-    public record RefreshTokenCommand(string RefreshToken) : IRequest<TokenResponseDto?>;
+    public record RefreshTokenCommand(string RefreshToken) : IRequest<Result<TokenResponseDto?>>;
 }
