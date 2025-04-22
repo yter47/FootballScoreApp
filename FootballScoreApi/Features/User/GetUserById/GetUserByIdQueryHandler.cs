@@ -1,22 +1,28 @@
-﻿using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.Entities;
 using FootballScoreApp.Repositories.IRepositories;
 using MediatR;
 
 namespace FootballScoreApp.Features.Users.GetUserById
 {
-    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User?>
+    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<User?>>
     {
         private readonly IUserRepository _userRepository;
 
-        public GetUserByIdQueryHandler(
-            IUserRepository userRepository)
+        public GetUserByIdQueryHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<User?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<User?>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+
+            if (user is null)
+            {
+                return Result<User?>.Failure("User was not found");
+            }
+            return Result<User?>.Success(user);
         }
     }
 }

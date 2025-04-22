@@ -1,7 +1,8 @@
-﻿using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Abstractions;
+using FootballScoreApp.Entities;
 using MediatR;
 
 namespace FootballScoreApp.Features.Admin.AssignRoleToUser
 {
-    public record AssignRoleCommand(int UserId, int RoleId) : IRequest<UserRole?>;
+    public record AssignRoleCommand(int UserId, int RoleId) : IRequest<Result<UserRole?>>;
 }

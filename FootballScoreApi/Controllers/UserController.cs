@@ -3,6 +3,7 @@ using FootballScoreApp.Features.Users.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FootballScoreApp.Controllers
 {
@@ -18,15 +19,15 @@ namespace FootballScoreApp.Controllers
         }
 
         [HttpGet("GetUserById")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<User>> GetUserById(GetUserByIdQuery query)
         {
-            var user = await _sender.Send(new GetUserByIdQuery(id));
-            if (user is null)
-            {
-                return NotFound();
-            }
+            var result = await _sender.Send(query);
 
-            return Ok(user);
+            if (result.IsFailure)
+            {
+                return BadRequest(new { Error = result.Error });
+            }
+            return Ok(result.Value);
         }
 
         [Authorize]
