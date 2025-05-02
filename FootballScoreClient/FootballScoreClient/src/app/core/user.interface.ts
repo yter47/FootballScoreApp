@@ -1,5 +1,5 @@
-export interface IUser {
+export interface IAuthUserTokens {
     // username: string;
-    token: string;
+    accessToken: string;
     refreshToken: string; 
 }

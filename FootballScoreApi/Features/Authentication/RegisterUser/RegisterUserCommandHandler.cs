@@ -38,6 +38,13 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
                 Username = request.Username
             };
 
+            var existingUser = await _userRepository.IsUsernameUniqueAsync(user.Username, cancellationToken);
+
+            if (existingUser)
+            {
+                return Result<TokenResponseDto?>.Failure("Username already exists");
+            }
+
             var passwordHash = new PasswordHasher<User>()
                 .HashPassword(user, request.Password);
 
@@ -49,7 +56,6 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
             {
                 return Result<TokenResponseDto?>.Failure("Failed to get or create default 'User' role.");
             }
-
 
             user.UserRoles = new List<UserRole>
             {
