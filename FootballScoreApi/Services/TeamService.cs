@@ -11,6 +11,8 @@ namespace FootballScoreApp.Services
         public TeamService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", "0dd0934d9bc24b1ab66e18fc098e288d");
         }
 
         public async Task<Team> GetTeamById(int id)

@@ -34,7 +34,7 @@ namespace FootballScoreApp.Providers
                 issuer: _configuration.GetValue<string>("JwtSettings:Issuer"),
                 audience: _configuration.GetValue<string>("JwtSettings:Audience"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
+                expires: DateTime.UtcNow.AddMinutes(10),
                 signingCredentials: credentials
                 );
 

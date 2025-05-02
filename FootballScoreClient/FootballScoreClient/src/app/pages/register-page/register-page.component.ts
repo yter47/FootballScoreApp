@@ -33,8 +33,8 @@ export class RegisterPageComponent {
       .registerUser(this.form.getRawValue())
       .subscribe((response) => {
         localStorage.setItem('token', response.accessToken);
-        this.authService.currentUserSignal.set(response);
-        this.router.navigateByUrl('/');
+        this.authService.setTokens(response);
+        this.router.navigateByUrl('/home');
       });
   }
 }

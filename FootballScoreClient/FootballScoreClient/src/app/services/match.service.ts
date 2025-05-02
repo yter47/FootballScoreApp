@@ -19,6 +19,6 @@ export class MatchService {
   }
 
   getTeamById(id:number): Observable<Team> {
-    return this.httpClient.get<Team>(`https://localhost:7048/Match/getTeamById?id=${id}`)
+    return this.httpClient.get<Team>(`https://localhost:7048/Team/getTeamById?id=${id}`)
   }
 }

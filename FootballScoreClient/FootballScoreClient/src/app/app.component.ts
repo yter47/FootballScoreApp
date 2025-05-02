@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,10 +11,4 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'FootballScoreClient';
-  authService = inject(AuthService);
-
-  logout() {
-    localStorage.setItem('token', '');
-    this.authService.currentUserSignal.set(null);
-  }
 }

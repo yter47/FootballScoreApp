@@ -5,8 +5,8 @@ import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  authService = inject(AuthService);
-  router = inject(Router);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(): Observable<boolean | UrlTree> {
     const currentUser = this.authService.currentUserSignal();
@@ -16,19 +16,32 @@ export class AuthGuard implements CanActivate {
     }
 
     const token = localStorage.getItem('token');
-    if (!token) {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!token || !refreshToken) {
       return of(this.router.parseUrl('/login'));
     }
 
     return this.authService.authorize().pipe(
       map((user) => {
         if (user) {
-          this.authService.currentUserSignal.set(user);
+          this.authService.setTokens(user);
           return true;
         }
-        return this.router.parseUrl('/login');
+        return this.router.parseUrl('/home');
       }),
-      catchError(() => of(this.router.parseUrl('/login')))
+      catchError(() => {
+        return this.authService.refreshTokenRequest().pipe(
+          map((tokens) => {
+            if (tokens?.accessToken) {
+              this.authService.setTokens(tokens);
+              return true;
+            }
+            return this.router.parseUrl('/login');
+          }),
+          catchError(() => of(this.router.parseUrl('/login')))
+        );
+      })
     );
   }
 }
