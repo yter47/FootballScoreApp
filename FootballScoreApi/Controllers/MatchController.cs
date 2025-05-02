@@ -2,12 +2,14 @@
 using FootballScoreApp.Features.Match.GetMatchById;
 using FootballScoreApp.Features.Match.GetRecentMatches;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class MatchController : Controller
     {
         private readonly ISender _sender;

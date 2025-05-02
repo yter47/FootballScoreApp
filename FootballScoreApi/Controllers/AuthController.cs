@@ -1,8 +1,10 @@
 ﻿using FootballScoreApp.DTOs;
+using FootballScoreApp.Features.Authentication.AuthorizeUser;
 using FootballScoreApp.Features.Authentication.LoginUser;
 using FootballScoreApp.Features.Authentication.RefreshToken;
 using FootballScoreApp.Features.Authentication.RegisterUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
@@ -51,6 +53,26 @@ namespace FootballScoreApp.Controllers
             {
                 return BadRequest(new { Error = result.Error });
             }
+            return Ok(result.Value);
+        }
+
+        [Authorize]
+        [HttpGet("Authorize")]
+        public async Task<ActionResult<TokenResponseDto>> AuthenticatedOnlyEndPoint()
+        {
+            var username = User.Identity?.Name;
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized();
+            }
+
+            var query = new AuthorizeUserQuery(username);
+            var result = await _sender.Send(query);
+
+            if (result.IsFailure)
+                return BadRequest(new { Error = result.Error });
+
             return Ok(result.Value);
         }
     }

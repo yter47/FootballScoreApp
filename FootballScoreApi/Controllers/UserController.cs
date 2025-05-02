@@ -3,12 +3,12 @@ using FootballScoreApp.Features.Users.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FootballScoreApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ISender _sender;
@@ -28,13 +28,6 @@ namespace FootballScoreApp.Controllers
                 return BadRequest(new { Error = result.Error });
             }
             return Ok(result.Value);
-        }
-
-        [Authorize]
-        [HttpGet("Authorize")]
-        public IActionResult AuthenticatedOnlyEndPoint()
-        {
-            return Ok("Autenticated");
         }
 
         [Authorize(Roles = "Admin")]

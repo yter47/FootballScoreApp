@@ -23,6 +23,6 @@ export class AuthService {
   }
 
   authorize():Observable<IAuthUserTokens> {
-    return this.httpClient.get<IAuthUserTokens>("https://localhost:7048/User/Authorize");
+    return this.httpClient.get<IAuthUserTokens>("https://localhost:7048/Auth/Authorize");
   }
 }

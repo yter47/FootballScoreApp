@@ -6,22 +6,26 @@ import { LeagueResponse } from '../core/league';
 import { StandingsResponse } from '../core/standings';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ApiService {
-
-  httpClient = inject(HttpClient)
+  httpClient = inject(HttpClient);
 
   getAvailableLeagues(): Observable<LeagueResponse> {
-    return this.httpClient.get<LeagueResponse>("https://localhost:7048/League/GetAvailableCompetitions");
+    return this.httpClient.get<LeagueResponse>(
+      'https://localhost:7048/Competition/GetAvailableCompetitions'
+    );
   }
 
   getMatchesByLeagueId(id: number): Observable<MatchResponse> {
-    return this.httpClient.get<MatchResponse>(`https://localhost:7048/League/getMatchesByCompetitionId?id=${id}`)
+    return this.httpClient.get<MatchResponse>(
+      `https://localhost:7048/Competition/getMatchesByCompetitionId?id=${id}`
+    );
   }
 
   getStandingsByLeagueId(id: number): Observable<StandingsResponse> {
-       return this.httpClient.get<StandingsResponse>(`https://localhost:7048/League/getStandingsByCompetitionId?id=${id}`)
+    return this.httpClient.get<StandingsResponse>(
+      `https://localhost:7048/Competition/getStandingsByCompetitionId?id=${id}`
+    );
   }
 }

@@ -4,12 +4,14 @@ using FootballScoreApp.Features.Competitions.GetStandingsByCompetitionId;
 using FootballScoreApp.Features.League.GetAvailableLeagues;
 using FootballScoreApp.Features.League.GetLeagueByShortName;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class CompetitionController : Controller
     {
         private readonly ISender _sender;

@@ -31,11 +31,7 @@ export class LoginPageComponent {
         console.log(response);
         localStorage.setItem('token', response.accessToken);
         this.authService.currentUserSignal.set(response);
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/home');
       });
-  }
-
-  authorize() {
-    this.authService.authorize().subscribe((x) => console.log(x));
   }
 }

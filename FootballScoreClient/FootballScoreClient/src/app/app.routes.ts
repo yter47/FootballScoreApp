@@ -6,14 +6,30 @@ import { MatchPageComponent } from './pages/match-page/match-page.component';
 import { TeamPageComponent } from './pages/team-page/team-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AuthGuard } from './shared/interceptors/auth.guard';
+import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
-    {path: 'login', component: LoginPageComponent},
-    {path: 'register', component: RegisterPageComponent},
-    {path: 'home', component: HomePageComponent},
-    {path: 'leagues', component: LeagueListComponent},
-    {path: 'league/:id', component: LeagueDetailsComponent},
-    {path: 'match/:id', component: MatchPageComponent},
-    {path: 'team/:id', component: TeamPageComponent}
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'home', component: HomePageComponent },
+      { path: 'leagues', component: LeagueListComponent },
+      { path: 'league/:id', component: LeagueDetailsComponent },
+      { path: 'match/:id', component: MatchPageComponent },
+      { path: 'team/:id', component: TeamPageComponent },
+    ],
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      { path: 'login', component: LoginPageComponent },
+      { path: 'register', component: RegisterPageComponent }
+    ]
+  },
+  { path: '**', redirectTo: '' }
 ];

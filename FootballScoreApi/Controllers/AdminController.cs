@@ -2,13 +2,14 @@
 using FootballScoreApp.Features.Admin.AssignRoleToUser;
 using FootballScoreApp.Features.Roles.CreateRole;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballScoreApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ISender _sender;

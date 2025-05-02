@@ -15,4 +15,12 @@
     <div>
         News
     </div>
+
+    <div *ngIf="authService.currentUserSignal() as user">
+        <div>
+          Inloggad som {{ user.accessToken }}
+          <button (click)="logout()">Logout</button>
+        </div>
+      </div>
+      
 </div>
