@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { IAuthUserTokens } from '../core/user.interface';
 import { RegisterUser } from '../core/registerUser';
 import { LoginUser } from '../core/loginUser';
@@ -47,7 +47,9 @@ export class AuthService {
   }
 
   loginUser(user: LoginUser): Observable<IAuthUserTokens> {
-    return this.httpClient.post<IAuthUserTokens>("https://localhost:7048/Auth/LoginUser", user);
+    return this.httpClient.post<IAuthUserTokens>("https://localhost:7048/Auth/LoginUser", user).pipe(
+      tap((x) => console.log(x))
+    );
   }
 
   authorize():Observable<IAuthUserTokens> {

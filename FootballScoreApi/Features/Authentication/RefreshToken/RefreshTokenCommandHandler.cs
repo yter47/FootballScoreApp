@@ -46,6 +46,9 @@ namespace FootballScoreApp.Features.Authentication.RefreshToken
 
             return Result<TokenResponseDto?>.Success(new TokenResponseDto
             {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
                 AccessToken = _tokenProvider.CreateToken(user),
                 RefreshToken = refreshToken.Token
             });

@@ -18,7 +18,7 @@
 
     <div *ngIf="authService.currentUserSignal() as user">
         <div>
-          Inloggad som {{ user.accessToken }}
+          Inloggad som {{ user.username }}
           <button (click)="logout()">Logout</button>
         </div>
       </div>
