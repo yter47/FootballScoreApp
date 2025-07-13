@@ -28,3 +28,7 @@
 <span>
   <button (click)="this.router.navigateByUrl('/login')">Already registered?</button>
 </span>
+
+<ul *ngIf="apiErrors.length > 0">
+  <li *ngFor="let err of apiErrors">{{ err }}</li>
+</ul>
