@@ -45,7 +45,9 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 //Providers
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<TeamService>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+//builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

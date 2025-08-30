@@ -7,12 +7,17 @@ namespace FootballScoreApp.Services
     public class CompetitionService : ICompetitionService
     {
         private readonly HttpClient _httpClient;
+        private readonly string _authToken;
 
-        public CompetitionService(HttpClient httpClient)
+        public CompetitionService(HttpClient httpClient
+            , IConfiguration configuration
+            )
         {
+            this._authToken = configuration["ApiSettings:AuthToken"];
+
             _httpClient = httpClient;
             _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", "0dd0934d9bc24b1ab66e18fc098e288d");
+            _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", this._authToken);
         }
 
         public async Task<CompetitonsResponse> GetAvailableLeagues()
