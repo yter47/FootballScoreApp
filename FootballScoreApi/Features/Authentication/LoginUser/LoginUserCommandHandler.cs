@@ -31,13 +31,13 @@ namespace FootballScoreApp.Features.Authentication.LoginUser
             if (user is null)
                 return Result<TokenResponseDto>.Failure("Invalid username or password");
 
-            var passwordCheck = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password);
+            var passwordCheck = new PasswordHasher<Entities.User>().VerifyHashedPassword(user, user.PasswordHash, request.Password);
 
             if (passwordCheck == PasswordVerificationResult.Failed)
                 return Result<TokenResponseDto>.Failure("Invalid username or password");
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
-            _refreshTokenRepository.Add(refreshToken);
+            _refreshTokenRepository.Add(refreshToken, cancellationToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             var tokenResponse = new TokenResponseDto

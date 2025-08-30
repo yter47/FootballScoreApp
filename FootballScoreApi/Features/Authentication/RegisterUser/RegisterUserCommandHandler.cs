@@ -31,7 +31,7 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
             RegisterUserCommand request, 
             CancellationToken cancellationToken)
         {
-            var user = new User
+            var user = new Entities.User
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -45,7 +45,7 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
                 return Result<TokenResponseDto?>.Failure("Username already exists");
             }
 
-            var passwordHash = new PasswordHasher<User>()
+            var passwordHash = new PasswordHasher<Entities.User>()
                 .HashPassword(user, request.Password);
 
             user.PasswordHash = passwordHash;
@@ -62,11 +62,11 @@ namespace FootballScoreApp.Features.Authentication.RegisterUser
                 new UserRole { Role = defaultRole }
             };
 
-            _userRepository.Add(user);
+            _userRepository.Add(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
-            _refreshTokenRepository.Add(refreshToken);
+            _refreshTokenRepository.Add(refreshToken, cancellationToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             return Result<TokenResponseDto?>.Success(new TokenResponseDto  

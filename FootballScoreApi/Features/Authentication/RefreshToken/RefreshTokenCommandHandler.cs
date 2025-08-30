@@ -41,7 +41,7 @@ namespace FootballScoreApp.Features.Authentication.RefreshToken
             }
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
-            _refreshTokenRepository.Add(refreshToken);
+            _refreshTokenRepository.Add(refreshToken, cancellationToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             return Result<TokenResponseDto?>.Success(new TokenResponseDto
@@ -54,26 +54,26 @@ namespace FootballScoreApp.Features.Authentication.RefreshToken
             });
         }
 
-        private async Task<Result<User>> ValidateRefreshTokenAsync(string token, CancellationToken cancellationToken)
+        private async Task<Result<Entities.User>> ValidateRefreshTokenAsync(string token, CancellationToken cancellationToken)
         {
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenUserAndRolesByRefreshTokenAsync(token, cancellationToken);
 
             if (refreshToken is null)
             {
-                return Result<User>.Failure("Refresh token not found.");
+                return Result<Entities.User>.Failure("Refresh token not found.");
             }
 
             if (refreshToken.Token != token)
             {
-                return Result<User>.Failure("Token mismatch.");
+                return Result<Entities.User>.Failure("Token mismatch.");
             }
 
             if (refreshToken.RefreshTokenExpiryTimeUtc < DateTime.UtcNow)
             {
-                return Result<User>.Failure("Refresh token has expired.");
+                return Result<Entities.User>.Failure("Refresh token has expired.");
             }
 
-            return Result<User>.Success(refreshToken.User);
+            return Result<Entities.User>.Success(refreshToken.User);
         }
     }
 }

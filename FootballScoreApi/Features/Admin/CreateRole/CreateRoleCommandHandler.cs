@@ -19,7 +19,7 @@ namespace FootballScoreApp.Features.Roles.CreateRole
                 Name = request.Name
             };
 
-            _roleRepository.Add(role);
+            _roleRepository.Add(role, cancellationToken);
             await _roleRepository.SaveChangesAsync(cancellationToken);
 
             return role;

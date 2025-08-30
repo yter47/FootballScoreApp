@@ -33,7 +33,7 @@ namespace FootballScoreApp.Features.Authentication.AuthorizeUser
             var accessToken = _tokenProvider.CreateToken(user);
 
             var refreshToken = _tokenProvider.GenerateRefreshToken(user);
-            _refreshTokenRepository.Add(refreshToken);
+            _refreshTokenRepository.Add(refreshToken, cancellationToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
             return Result<TokenResponseDto>.Success(new TokenResponseDto

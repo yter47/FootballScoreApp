@@ -11,14 +11,16 @@ namespace FootballScoreApp.Repositories
         {
         }
 
-        public async Task<bool> IsUsernameUniqueAsync(string username, CancellationToken cancellationToken)
+        public async Task<bool> IsUsernameUniqueAsync(string username
+            , CancellationToken cancellationToken)
         {
             return await _context.Users
                 .AnyAsync(u => u.Username.ToLower() == username.ToLower(), cancellationToken);
 
         }
 
-        public async Task<User?> GetUserWithRolesByUsernameAsync(string username, CancellationToken cancellationToken)
+        public async Task<User?> GetUserWithRolesByUsernameAsync(string username
+            , CancellationToken cancellationToken)
         {
             return await _context.Users
                 .Include(u => u.UserRoles)

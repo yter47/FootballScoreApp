@@ -46,7 +46,7 @@ namespace FootballScoreApp.Features.Admin.AssignRoleToUser
                 RoleId = role.Id
             };
 
-            _userRoleRepository.Add(entity);
+            _userRoleRepository.Add(entity, cancellationToken);
             await _userRoleRepository.SaveChangesAsync(cancellationToken);
 
             return Result<UserRole?>.Success(entity);

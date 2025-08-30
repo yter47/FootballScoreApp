@@ -429,4 +429,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+FootballScoreApi/appsettings.json
+FootballScoreApi/appsettings.Development.json
+
 # End of https://www.toptal.com/developers/gitignore/api/angular,csharp

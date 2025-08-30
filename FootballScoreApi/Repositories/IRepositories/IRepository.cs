@@ -4,8 +4,8 @@
     {
         Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
         Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken);
-        void Add(T entity);
-        void Delete(T entity);
+        void Add(T entity, CancellationToken cancellationToken);
+        void Delete(T entity, CancellationToken cancellationToken);
         Task SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -17,8 +17,8 @@ namespace FootballScoreApp.Repositories
 
         public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken) => await _dbSet.FindAsync(id);
         public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken) => await _dbSet.ToListAsync();
-        public void Add(T entity) => _dbSet.Add(entity);
-        public void Delete(T entity) => _dbSet.Remove(entity);
+        public void Add(T entity, CancellationToken cancellationToken) => _dbSet.Add(entity);
+        public void Delete(T entity, CancellationToken cancellationToken) => _dbSet.Remove(entity);
         public Task SaveChangesAsync(CancellationToken cancellationToken) => _context.SaveChangesAsync();
     }
 }

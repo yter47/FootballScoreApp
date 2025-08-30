@@ -15,5 +15,6 @@ namespace FootballScoreApp.Entities
 
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<UserTeam> UserTeams { get; set; } = new List<UserTeam>();
     }
 }
