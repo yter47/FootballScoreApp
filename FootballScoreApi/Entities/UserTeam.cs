@@ -1,6 +1,4 @@
-﻿using FootballScoreApp.DTOs;
-
-namespace FootballScoreApp.Entities
+﻿namespace FootballScoreApp.Entities
 {
     public class UserTeam
     {
@@ -8,6 +6,5 @@ namespace FootballScoreApp.Entities
         public User User { get; set; }
 
         public int TeamId { get; set; }
-        public virtual Team Team { get; set; }
     }
 }

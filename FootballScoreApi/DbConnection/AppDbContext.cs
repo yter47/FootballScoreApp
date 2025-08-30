@@ -41,11 +41,6 @@ namespace FootballScoreApp.DbConnection
                 .HasOne(ul => ul.User)
                 .WithMany(u => u.UserTeams)
                 .HasForeignKey(ul => ul.UserId);
-
-            modelBuilder.Entity<UserTeam>()
-                .HasOne(ul => ul.Team)
-                .WithMany()
-                .HasForeignKey(ul => ul.TeamId);
         }
 
     }
