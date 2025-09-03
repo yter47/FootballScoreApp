@@ -1,16 +1,27 @@
 <div *ngIf="leagues$ | async as leagueResponse; else loading">
-    <div *ngFor="let league of leagueResponse.competitions">
-        <div class="league-crests">
-            <nav>
-                <a [routerLink]="['/league', league.id]">
-                    <img [src]="league.emblem" alt="{{ league.name }}" width="30"> {{league.name}}
-                </a>
-            </nav>
+  <div class="league-list">
+    <div *ngFor="let league of leagueResponse.competitions" class="league-card">
+      
+      <!-- Hela kortet är nu omslutet av en länk -->
+      <a [routerLink]="['/league', league.id]" class="league-card-link">
+        <div class="league-header">
+          <div class="league-info">
+            <img [src]="league.emblem" alt="{{ league.name }}" class="league-logo">
+            <h2>{{ league.name }}</h2>
+          </div>
+          <p class="league-area">Area: {{ league.area.name }}</p>
         </div>
+        
+        <div class="league-details">
+          <p><strong>Current Season:</strong> {{ league.currentSeason.startDate | date: 'yyyy' }} - {{ league.currentSeason.endDate | date: 'yyyy' }}</p>
+          <p><strong>Number of Seasons:</strong> {{ league.numberOfAvailableSeasons }}</p>
+          <p><strong>Plan:</strong> {{ league.plan }}</p>
+        </div>
+      </a>
     </div>
+  </div>
 </div>
 
-
 <ng-template #loading>
-    <p>Loading leagues...</p>
+  <p>Loading leagues...</p>
 </ng-template>

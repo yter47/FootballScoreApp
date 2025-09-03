@@ -1,5 +1,86 @@
-.league-crests {
-    margin-right: 10px;
+$primary-color: #1e2a47;
+$accent-color: #ff9f00;
+$text-color: #333;
+$bg-color: #f4f7fa;
+
+.league-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.league-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-decoration: none;  // Ingen understrykning för länk
+  color: inherit;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .league-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    margin-bottom: 15px;
+    
+    .league-info {
+      display: flex;
+      align-items: center;
+      
+      .league-logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+        color: $primary-color;
+        margin: 0;
+      }
+    }
+
+    .league-area {
+      font-size: 1rem;
+      color: $text-color;
+    }
+  }
+  
+  .league-details {
+    font-size: 1rem;
+    margin-bottom: 15px;
+
+    p {
+      margin: 5px 0;
+      color: $text-color;
+    }
+  }
+}
+
+// Gör hela kortet klickbart genom att lägga till stil på länken
+.league-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .league-card {
+    padding: 15px;
+  }
+
+  .league-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .league-details p {
+    font-size: 0.9rem;
+  }
 }

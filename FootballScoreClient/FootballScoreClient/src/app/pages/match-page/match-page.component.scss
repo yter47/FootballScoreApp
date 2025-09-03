@@ -1,0 +1,136 @@
+$primary-color: #1e2a47;
+$accent-color: #ff9f00;
+$text-color: #333;
+$bg-color: #f4f7fa;
+
+.match-page {
+  padding: 20px;
+  background-color: $bg-color;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  .competition-info {
+    h2 {
+      font-size: 1.5rem;
+      color: $primary-color;
+    }
+    p {
+      font-size: 1rem;
+      color: $text-color;
+    }
+  }
+
+  .match-time {
+    text-align: right;
+    
+    p {
+      font-size: 1.1rem;
+      color: $accent-color;
+    }
+
+    .status {
+      font-weight: bold;
+      color: $primary-color;
+    }
+  }
+}
+
+.teams {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  .team {
+    text-align: center;
+
+    .team-logo {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+
+    .team-name {
+      font-size: 1.1rem;
+      color: $primary-color;
+    }
+  }
+
+  .score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $accent-color;
+  }
+}
+
+.referees {
+  margin-bottom: 30px;
+
+  h3 {
+    font-size: 1.2rem;
+    color: $primary-color;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    
+    li {
+      font-size: 1rem;
+      color: $text-color;
+    }
+  }
+}
+
+.team-info {
+  display: flex;
+  justify-content: space-between;
+  
+  .home-team-info, .away-team-info {
+    width: 45%;
+    
+    h3 {
+      font-size: 1.3rem;
+      color: $primary-color;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $text-color;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      color: $accent-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .match-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .teams {
+    flex-direction: column;
+    align-items: center;
+
+    .score {
+      margin: 20px 0;
+    }
+  }
+}

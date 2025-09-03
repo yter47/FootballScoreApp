@@ -1,20 +1,61 @@
-<div *ngIf="match$ | async as match">
-
-    <div>
-        <p>
-            {{match.area.name}}
-            <img [src]="match.area.flag" alt="{{ match.homeTeam.name }}" width="30">
-            {{match.competition.name}}
-        </p>
-        <div class="team-crests">
-            <a [routerLink]="['/team', match.homeTeam.id]">
-                <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
-            </a>
-            <a [routerLink]="['/team', match.awayTeam.id]">
-                <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
-            </a>
-        </div>
+<div class="match-page" *ngIf="match$ | async as match">
+  <div class="match-header">
+    <div class="competition-info">
+      <h2>{{ match.competition.name }} - Matchday {{ match.matchday }}</h2>
+      <p>
+        {{ match.season.startDate | date : "yyyy" }} -
+        {{ match.season.endDate | date : "yyyy" }}
+      </p>
+      <p>Stage: {{ match.stage }} - Group: {{ match.group || "N/A" }}</p>
     </div>
+    <div class="match-time">
+      <p>
+        <strong>{{ match.utcDate | date : "short" }}</strong>
+      </p>
+      <p>
+        Status: <span class="status">{{ match.status }}</span>
+      </p>
+    </div>
+  </div>
 
-    {{match.id}}
+  <div class="teams">
+    <div class="team">
+      <img
+        [src]="match.homeTeam.crest"
+        alt="{{ match.homeTeam.name }}"
+        class="team-logo"
+      />
+      <div class="follow-icon" *ngIf="isFollowingHomeTeam$ | async as isFollowingHomeTeam">
+          <button (click)="toggleFollow(match.homeTeam.id)">          
+            {{ isFollowingHomeTeam ? 'Avfölj' : 'Följ' }}
+          </button>
+      </div>
+      <p class="team-name">{{ match.homeTeam.name }}</p>
+    </div>
+    <div class="score">
+      <p>{{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}</p>
+    </div>
+    <div class="team">
+      <img
+        [src]="match.awayTeam.crest"
+        alt="{{ match.awayTeam.name }}"
+        class="team-logo"
+      />
+      <div class="follow-icon" *ngIf="isFollowingAwayTeam$ | async as isFollowingAwayTeam">
+          <button (click)="toggleFollow(match.awayTeam.id)">          
+            {{ isFollowingAwayTeam ? 'Avfölj' : 'Följ' }} 
+          </button>
+      </div>
+      <p class="team-name">{{ match.awayTeam.name }}</p>
+    </div>
+  </div>
+
+  <div class="referees">
+    <h3>Referees</h3>
+    <ul>
+      <li *ngFor="let referee of match.referees">
+        {{ referee.name }} ({{ referee.type }})
+      </li>
+    </ul>
+  </div>
 </div>

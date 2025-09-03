@@ -2,7 +2,18 @@
     display: block;
   }
   
-  .router-content {
-    margin-top: 60px; /* justera efter navbarens höjd */
-  }
+.app-navbar {
+  position: fixed; /* Gör så att navigeringen stannar högst upp */
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.router-content {
+  display: flex;
+  flex-direction: column;
+  height: 10vh; 
+  margin-top: 60px; /* Ger lite plats för navbaren om den är fast (kan justeras beroende på navbarens höjd) */
+}
   

@@ -16,7 +16,6 @@ namespace FootballScoreApp.Repositories
         {
             return await _context.Users
                 .AnyAsync(u => u.Username.ToLower() == username.ToLower(), cancellationToken);
-
         }
 
         public async Task<User?> GetUserWithRolesByUsernameAsync(string username
@@ -26,6 +25,14 @@ namespace FootballScoreApp.Repositories
                 .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                 .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower(), cancellationToken);
+        }
+        public async Task<bool> IsUserFollowingTeamAsync(int userId
+            , int teamId
+            , CancellationToken cancellationToken)
+        {
+            return await _context.UserTeam
+                .AnyAsync(u => u.UserId == userId && u.TeamId == teamId
+                , cancellationToken);
         }
     }
 }

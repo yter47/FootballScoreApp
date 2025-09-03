@@ -6,5 +6,6 @@ namespace FootballScoreApp.Repositories.IRepositories
     {
         Task<bool> IsUsernameUniqueAsync(string username, CancellationToken cancellationToken);
         Task<User?> GetUserWithRolesByUsernameAsync(string username, CancellationToken cancellationToken);
+        Task<bool> IsUserFollowingTeamAsync(int userId, int teamId, CancellationToken cancellationToken);
     }
 }

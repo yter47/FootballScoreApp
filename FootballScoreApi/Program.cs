@@ -35,6 +35,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 //Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -48,7 +49,7 @@ builder.Services.AddScoped<IUserTeamRepository, UserTeamRepository>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddHttpClient<TeamService>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-//builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

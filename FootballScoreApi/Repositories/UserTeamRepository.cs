@@ -1,6 +1,5 @@
 ﻿using FootballScoreApp.DbConnection;
 using FootballScoreApp.Entities;
-using FootballScoreApp.Features.User.FollowTeam;
 using FootballScoreApp.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +11,30 @@ namespace FootballScoreApp.Repositories
         {
         }
 
-        public async Task<bool> UserIsFollowing(FollowTeamCommand followTeamCommand
+        public async Task<bool> UserIsFollowing(int teamId
+            , int userId
             , CancellationToken cancellationToken
             )
         {
             return await _context.UserTeam
-                .AnyAsync(ut => ut.TeamId == followTeamCommand.teamId && ut.UserId == followTeamCommand.userId
+                .AnyAsync(ut => ut.TeamId == teamId && ut.UserId == userId
                 , cancellationToken
                 );
+        }
+        
+        public async Task<bool> DeleteUserTeam(int teamId
+            , int userId
+            , CancellationToken cancellationToken
+            )
+        {
+            var entityToRemove = await _context.UserTeam
+                .SingleAsync(ut => ut.TeamId == teamId && ut.UserId == userId
+                , cancellationToken
+            );
+
+            _context.UserTeam.Remove(entityToRemove);
+
+            return true;
         }
     }
 }

@@ -1,15 +1,95 @@
-.match {
-    margin-bottom: 20px;
+
+$primary-color: #1e2a47;
+$accent-color: #ff9f00;
+$light-bg: #f1f3f7;
+$text-color: #333;
+
+.matches-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
-.match h3 {
-    font-size: 1.2rem;
+.match-card {
+  display: block;  // Gör att hela kortet är klickbart
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-decoration: none;  // Tar bort understrykning från länken
+  color: inherit;  // Behåller textfärgen från matchning av föräldern
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  // Större skugga vid hover
+  }
 }
 
-.match .score {
+.match-header h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: $primary-color;
+  margin-bottom: 8px;
+}
+
+.match-info {
+  font-size: 0.9rem;
+  color: $text-color;
+}
+
+.teams {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $primary-color;
+
+  .team-crests {
+    display: flex;
+    gap: 15px;
+  }
+}
+
+.team-crest {
+  width: 30px;
+  height: 30px;
+}
+
+.match-details {
+  font-size: 0.9rem;
+  color: $text-color;
+
+  .status {
     font-weight: bold;
+    color: $accent-color;
+  }
+
+  .score {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $primary-color;
+    margin-top: 10px;
+  }
 }
 
-.match .team-crests img {
-    margin-right: 10px;
+@media (max-width: 768px) {
+  .match-card {
+    padding: 10px;
+  }
+
+  .match-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .teams p {
+    font-size: 1rem;
+  }
+
+  .score {
+    font-size: 1.1rem;
+  }
 }
+

@@ -1,26 +1,25 @@
-<div *ngFor="let match of matches">
-    <div class="match">
-        <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
-        <p>{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate |
-            date:'yyyy' }}</p>
-        
-        <a [routerLink]="['/match', match.id]">
-            <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
-        </a>        
-        
-        <p>Status: {{ match.status }}</p>
-        <p>Match Time: {{ match.utcDate | date:'short' }}</p>
-
-        <div class="score">
-            <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{
-                match.score.fullTime.away }}</span>
-            <span *ngIf="match.score.fullTime.home === null"></span>
-        </div>
-
-        <div class="team-crests">
-            <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" width="30">
-            <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" width="30">
-        </div>
+<div class="matches-container">
+  <a *ngFor="let match of matches" [routerLink]="['/match', match.id]" class="match-card">
+    <div class="match-header">
+      <h3>{{ match.competition.name }} - Matchday {{ match.matchday }}</h3>
+      <p class="match-info">{{ match.area.name }} | {{ match.season.startDate | date:'yyyy' }} - {{ match.season.endDate | date:'yyyy' }}</p>
     </div>
-    <hr>
+
+    <div class="teams">
+      <p><strong>{{ match.homeTeam.name }}</strong> vs <strong>{{ match.awayTeam.name }}</strong></p>
+      <div class="team-crests">
+        <img [src]="match.homeTeam.crest" alt="{{ match.homeTeam.name }}" class="team-crest">
+        <img [src]="match.awayTeam.crest" alt="{{ match.awayTeam.name }}" class="team-crest">
+      </div>
+    </div>
+
+    <div class="match-details">
+      <p>Status: <span class="status">{{ match.status }}</span></p>
+      <p>Match Time: {{ match.utcDate | date:'short' }}</p>
+      <div class="score">
+        <span *ngIf="match.score.fullTime.home !== null">{{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}</span>
+        <span *ngIf="match.score.fullTime.home === null">-</span>
+      </div>
+    </div>
+  </a>
 </div>

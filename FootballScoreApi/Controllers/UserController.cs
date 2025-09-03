@@ -1,6 +1,6 @@
-﻿using FootballScoreApp.DTOs;
-using FootballScoreApp.Entities;
+﻿using FootballScoreApp.Entities;
 using FootballScoreApp.Features.User.FollowTeam;
+using FootballScoreApp.Features.User.GetIsFollowingTeam;
 using FootballScoreApp.Features.Users.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +43,18 @@ namespace FootballScoreApp.Controllers
         public async Task<ActionResult<int>> FollowTeam(FollowTeamCommand command)
         {
             var result = await _sender.Send(command);
+
+            if (result.IsFailure)
+            {
+                return BadRequest(new { Error = result.Error });
+            }
+            return Ok(result.Value);
+        }
+        
+        [HttpGet("IsFollowing")]
+        public async Task<ActionResult<bool>> IsFollowing([FromQuery] GetIsFollowingTeamQuery query)
+        {
+            var result = await _sender.Send(query);
 
             if (result.IsFailure)
             {
